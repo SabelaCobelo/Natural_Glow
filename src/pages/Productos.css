@@ -95,12 +95,13 @@
     background-color: #45a049;
 }
 .favorite-button {
-    background: white; /* Quitamos el fondo */
+    background-color: white; /* Quitamos el fondo */
     border: none; /* Quitamos el borde */
     color: #ccc; /* Color gris para el corazón no marcado */
     font-size: 1.5rem; /* Tamaño del ícono */
     cursor: pointer;
     padding: 5px; /* Espaciado interno */
     transition: color 0.3s ease; /* Transición suave para el color */
+
 }
 

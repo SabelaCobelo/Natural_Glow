@@ -11,17 +11,9 @@ interface Product {
 
 const Productos: React.FC = () => {
     const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
-    const [favorites, setFavorites] = useState<{ [key: string]: boolean }>({});
 
     const handleQuantityChange = (productId: string, quantity: number) => {
         setQuantities((prev) => ({ ...prev, [productId]: quantity }));
-    };
-
-    const toggleFavorite = (productId: string) => {
-        setFavorites((prev) => ({
-            ...prev,
-            [productId]: !prev[productId], // Alternar entre true y false
-        }));
     };
 
     const products: Product[] = [
@@ -48,7 +40,7 @@ const Productos: React.FC = () => {
         },
         {
             id: '4',
-            name: 'Aceite Corporal',
+            name: 'Serum de péptidos',
             description: 'Nutrición intensiva con aceite de argán y rosa mosqueta.',
             price: 18.99,
             image: '/img/cosmetic4.jpg',
@@ -62,7 +54,7 @@ const Productos: React.FC = () => {
         },
         {
             id: '6',
-            name: 'Exfoliante Corporal',
+            name: 'Aceites esenciales',
             description: 'Elimina células muertas con azúcar de caña y aceite de almendras.',
             price: 9.99,
             image: '/img/cosmetic6.jpg',
@@ -71,8 +63,8 @@ const Productos: React.FC = () => {
 
     return (
         <div className="productos-container">
-            <h2>Nuestros Productos</h2>
-            <p>Explora nuestra gama de productos naturales.</p>
+            <h2>Nuestra línea de productos orgánicos</h2>
+            <p>Adéntrate en nuestras diferentes gamas de productos.</p>
             <div className="product-grid">
                 {products.map((product) => (
                     <div key={product.id} className="product-card">
@@ -104,12 +96,7 @@ const Productos: React.FC = () => {
                             </button>
                         </div>
                         <button className="buy-button">Comprar</button>
-                        <button
-                            className={`favorite-button ${favorites[product.id] ? 'active' : ''}`}
-                            onClick={() => toggleFavorite(product.id)}
-                        >
-                            {favorites[product.id] ? '❤️' : '♡'}
-                        </button>
+                        <button className="favorite-button">❤️</button>
                     </div>
                 ))}
             </div>
