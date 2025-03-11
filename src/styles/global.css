@@ -4,17 +4,18 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
-
 header {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #63372C; /* Fondo marrón oscuro */
+    color: #F2E5D7; /* Texto beige claro */
     padding: 1rem;
     text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 nav ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
 nav ul li {
@@ -23,20 +24,36 @@ nav ul li {
 }
 
 nav ul li a {
-    color: white;
+    color: #F2E5D7; /* Texto beige claro */
     text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #C97D60; /* Texto terracota al hacer hover */
 }
 
 footer {
-    background-color: #333;
-    color: white;
+    background-color: #262322; /* Fondo casi negro */
+    color: #F2E5D7; /* Texto beige claro */
     text-align: center;
     padding: 1rem;
     position: fixed;
     bottom: 0;
     width: 100%;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
+footer a {
+    color: #C97D60; /* Enlaces en terracota */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #FFBCB5; /* Enlaces rosa suave al hacer hover */
+}
 
 .productos-container {
     font-family: 'Arial', sans-serif;

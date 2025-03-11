@@ -1,86 +1,36 @@
 .productos-container {
     font-family: 'Arial', sans-serif;
-    color: #333;
+    color: #262322; /* Texto oscuro */
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     text-align: center;
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-top: 20px;
+    background-color: #F2E5D7; /* Fondo beige claro */
 }
 
 .product-card {
-    background-color: #f9f9f9;
+    background-color: #FFFFFF; /* Fondo blanco para las tarjetas */
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
+    border: 1px solid #63372C; /* Borde marrón oscuro */
 }
 
 .product-card:hover {
     transform: translateY(-10px);
 }
 
-.product-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-.product-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.product-card p {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 10px;
-}
-
 .product-price {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #4CAF50;
+    color: #63372C; /* Precio en marrón oscuro */
     margin-bottom: 15px;
-}
-
-.quantity-selector {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.quantity-selector button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-.quantity-selector button:hover {
-    background-color: #45a049;
-}
-
-.quantity-selector span {
-    font-size: 1.2rem;
 }
 
 .buy-button {
-    background-color: #4CAF50;
+    background-color: #C97D60; /* Botón terracota */
     color: white;
     padding: 10px 20px;
     border: none;
@@ -92,16 +42,23 @@
 }
 
 .buy-button:hover {
-    background-color: #45a049;
+    background-color: #B36A50; /* Terracota más oscuro al hacer hover */
 }
+
 .favorite-button {
-    background-color: white; /* Quitamos el fondo */
-    border: none; /* Quitamos el borde */
-    color: #ccc; /* Color gris para el corazón no marcado */
-    font-size: 1.5rem; /* Tamaño del ícono */
+    background: none;
+    border: none;
+    color: #FFBCB5; /* Corazón rosa suave */
+    font-size: 1.5rem;
     cursor: pointer;
-    padding: 5px; /* Espaciado interno */
-    transition: color 0.3s ease; /* Transición suave para el color */
-
+    padding: 5px;
+    transition: color 0.3s ease;
 }
 
+.favorite-button.active {
+    color: #C97D60; /* Corazón terracota cuando está activo */
+}
+
+.favorite-button:hover {
+    color: #C97D60; /* Corazón terracota al hacer hover */
+}

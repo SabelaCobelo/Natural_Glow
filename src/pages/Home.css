@@ -1,0 +1,12 @@
+.hero-section {
+    background: url('/images/hero-bg.jpg') no-repeat center center/cover;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #F2E5D7; /* Texto beige claro */
+    border-radius: 10px;
+    margin-bottom: 40px;
+    background-color: #63372C; /* Fondo marrón oscuro */
+}
