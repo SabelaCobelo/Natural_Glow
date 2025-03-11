@@ -103,11 +103,11 @@ Este proyecto está bajo la licencia MIT. Para más detalles, consulta el archiv
 📧 Contacto
 Si tienes alguna pregunta, sugerencia o simplemente quieres saludar, no dudes en contactarme:
 
-👤 Nombre: [Tu nombre]
+👤 Nombre: Sabela Cobelo Losada
 
-📧 Email: [tu-email@example.com]
+📧 Email: sabela.cobelo7@gmail.com
 
-🐙 GitHub: tu-usuario
+🐙 GitHub: SabelaCobelo
 
 🌈 Agradecimientos
 Vite por la velocidad de desarrollo.
