@@ -16,7 +16,7 @@ const Home: React.FC = () => {
             <div className="container mx-auto px-4 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     {/* Izquierda: Texto de presentación */}
-                    <div className="space-y-6">
+                    <div className="space-y-6 text-center"> {/* Añadí text-center aquí */}
                         <h1 className="text-5xl font-bold text-[#6F6134]">
                             Natural Glow
                         </h1>

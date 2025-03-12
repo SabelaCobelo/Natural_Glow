@@ -1,6 +1,7 @@
-/* Estilos globales */
+/* Importar Tailwind CSS */
 @import "tailwindcss";
 
+/* Estilos globales */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -188,7 +189,6 @@ footer a:hover {
     --secondary: #E1C68F; /* Beige dorado */
     --background: #FAE7C9; /* Beige claro */
 }
-
 
 .text-primary {
     color: var(--primary);

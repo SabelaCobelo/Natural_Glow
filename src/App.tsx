@@ -8,6 +8,7 @@ import Contacto from './pages/Contacto';
 import Login from './pages/Login';
 import Register from './pages/Register'; // Importa el componente Register
 
+
 const App: React.FC = () => {
   return (
     <Router>
