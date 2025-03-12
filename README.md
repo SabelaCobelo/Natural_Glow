@@ -81,6 +81,16 @@ npm run preview: Sirve la versión de producción localmente para pruebas.
 🏠 Página de inicio
 Página de inicio
 
+
+Paleta de Colores:
+Fondo global: #FAE7C9 (beige claro).
+Texto global: #6F6134 (marrón oscuro).
+Header: #6F6134 (marrón oscuro) con texto #FAE7C9 (beige claro).
+Footer: #6F6134 (marrón oscuro) con texto #FAE7C9 (beige claro).
+Botones: #E1C68F (beige dorado) con texto #6F6134 (marrón oscuro).
+Favoritos: #E1C68F (beige dorado) y #6F6134 (marrón oscuro cuando está activo).
+
+
 🛍️ Página de productos
 Página de productos
 

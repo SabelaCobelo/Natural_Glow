@@ -4,14 +4,14 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #F2E5D7; /* Fondo beige claro */
-    color: #262322; /* Texto casi negro */
+    background-color: #FAE7C9; /* Fondo beige claro */
+    color: #6F6134; /* Texto marrón oscuro */
 }
 
 /* Header */
 header {
-    background-color: #63372C; /* Fondo marrón oscuro */
-    color: #F2E5D7; /* Texto beige claro */
+    background-color: #6F6134; /* Fondo marrón oscuro */
+    color: #FAE7C9; /* Texto beige claro */
     padding: 1rem;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
@@ -29,20 +29,20 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #F2E5D7; /* Texto beige claro */
+    color: #FAE7C9; /* Texto beige claro */
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease;
 }
 
 nav ul li a:hover {
-    color: #C97D60; /* Texto terracota al hacer hover */
+    color: #E1C68F; /* Texto beige dorado al hacer hover */
 }
 
 /* Footer */
 footer {
-    background-color: #262322; /* Fondo casi negro */
-    color: #F2E5D7; /* Texto beige claro */
+    background-color: #6F6134; /* Fondo marrón oscuro */
+    color: #FAE7C9; /* Texto beige claro */
     text-align: center;
     padding: 1rem;
     position: fixed;
@@ -52,19 +52,19 @@ footer {
 }
 
 footer a {
-    color: #C97D60; /* Enlaces en terracota */
+    color: #E1C68F; /* Enlaces en beige dorado */
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 footer a:hover {
-    color: #FFBCB5; /* Enlaces rosa suave al hacer hover */
+    color: #FAE7C9; /* Enlaces beige claro al hacer hover */
 }
 
 /* Página de productos */
 .productos-container {
     font-family: 'Arial', sans-serif;
-    color: #262322; /* Texto casi negro */
+    color: #6F6134; /* Texto marrón oscuro */
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -85,7 +85,7 @@ footer a:hover {
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    border: 1px solid #63372C; /* Borde marrón oscuro */
+    border: 1px solid #6F6134; /* Borde marrón oscuro */
 }
 
 .product-card:hover {
@@ -103,19 +103,19 @@ footer a:hover {
 .product-card h3 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: #63372C; /* Texto marrón oscuro */
+    color: #6F6134; /* Texto marrón oscuro */
 }
 
 .product-card p {
     font-size: 1rem;
-    color: #262322; /* Texto casi negro */
+    color: #6F6134; /* Texto marrón oscuro */
     margin-bottom: 10px;
 }
 
 .product-price {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #63372C; /* Texto marrón oscuro */
+    color: #6F6134; /* Texto marrón oscuro */
     margin-bottom: 15px;
 }
 
@@ -128,8 +128,8 @@ footer a:hover {
 }
 
 .quantity-selector button {
-    background-color: #C97D60; /* Terracota */
-    color: #F2E5D7; /* Texto beige claro */
+    background-color: #E1C68F; /* Beige dorado */
+    color: #6F6134; /* Texto marrón oscuro */
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
@@ -139,17 +139,17 @@ footer a:hover {
 }
 
 .quantity-selector button:hover {
-    background-color: #B36A50; /* Terracota más oscuro */
+    background-color: #D4B57D; /* Beige dorado más oscuro */
 }
 
 .quantity-selector span {
     font-size: 1.2rem;
-    color: #262322; /* Texto casi negro */
+    color: #6F6134; /* Texto marrón oscuro */
 }
 
 .buy-button {
-    background-color: #262322; /* Terracota */
-    color: #F2E5D7; /* Texto beige claro */
+    background-color: #E1C68F; /* Beige dorado */
+    color: #6F6134; /* Texto marrón oscuro */
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -160,13 +160,13 @@ footer a:hover {
 }
 
 .buy-button:hover {
-    background-color: #B36A50; /* Terracota más oscuro */
+    background-color: #D4B57D; /* Beige dorado más oscuro */
 }
 
 .favorite-button {
     background: none;
     border: none;
-    color: #FFBCB5; /* Rosa suave */
+    color: #E1C68F; /* Beige dorado */
     font-size: 1.5rem;
     cursor: pointer;
     padding: 5px;
@@ -174,9 +174,9 @@ footer a:hover {
 }
 
 .favorite-button.active {
-    color: #C97D60; /* Terracota */
+    color: #6F6134; /* Marrón oscuro */
 }
 
 .favorite-button:hover {
-    color: #C97D60; /* Terracota */
+    color: #6F6134; /* Marrón oscuro */
 }

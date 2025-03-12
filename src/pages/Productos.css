@@ -5,7 +5,7 @@
     margin: 0 auto;
     padding: 20px;
     text-align: center;
-    background-color: #F2E5D7; /* Fondo beige claro */
+    background-color: #FAE7C9 /* Fondo beige claro */
 }
 
 .product-card {
@@ -15,7 +15,7 @@
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    border: 1px solid #63372C; /* Borde marrón oscuro */
+    border: 1px solid #E1C68F /* Borde marrón oscuro */
 }
 
 .product-card:hover {
@@ -30,7 +30,7 @@
 }
 
 .buy-button {
-    background-color: #C97D60; /* Botón terracota */
+    background-color: #E1C68F; /* Botón terracota */
     color: white;
     padding: 10px 20px;
     border: none;
@@ -42,7 +42,7 @@
 }
 
 .buy-button:hover {
-    background-color: #B36A50; /* Terracota más oscuro al hacer hover */
+    background-color:#E1C68F; /* Terracota más oscuro al hacer hover */
 }
 
 .favorite-button {
@@ -56,9 +56,9 @@
 }
 
 .favorite-button.active {
-    color: #C97D60; /* Corazón terracota cuando está activo */
+    color: #E1C68F; /* Corazón terracota cuando está activo */
 }
 
 .favorite-button:hover {
-    color: #C97D60; /* Corazón terracota al hacer hover */
+    color: #E1C68F; /* Corazón terracota al hacer hover */
 }
