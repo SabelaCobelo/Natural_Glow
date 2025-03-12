@@ -1,36 +1,86 @@
 .productos-container {
     font-family: 'Arial', sans-serif;
-    color: #262322; /* Texto oscuro */
+    color: #333;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     text-align: center;
-    background-color: #FAE7C9 /* Fondo beige claro */
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
 }
 
 .product-card {
-    background-color: #FFFFFF; /* Fondo blanco para las tarjetas */
+    background-color: #f9f9f9;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    border: 1px solid #E1C68F /* Borde marrón oscuro */
 }
 
 .product-card:hover {
     transform: translateY(-10px);
 }
 
-.product-price {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #63372C; /* Precio en marrón oscuro */
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
     margin-bottom: 15px;
 }
 
+.product-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.product-card p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #6F6134; /* Marrón oscuro */
+    margin-bottom: 15px;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.quantity-selector button {
+    background-color: #6F6134; /* Marrón oscuro */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.quantity-selector button:hover {
+    background-color: #5A4D2B; /* Marrón más oscuro */
+}
+
+.quantity-selector span {
+    font-size: 1.2rem;
+}
+
 .buy-button {
-    background-color: #E1C68F; /* Botón terracota */
+    background-color: #6F6134; /* Marrón oscuro */
     color: white;
     padding: 10px 20px;
     border: none;
@@ -42,13 +92,13 @@
 }
 
 .buy-button:hover {
-    background-color:#E1C68F; /* Terracota más oscuro al hacer hover */
+    background-color: #5A4D2B; /* Marrón más oscuro */
 }
 
 .favorite-button {
     background: none;
     border: none;
-    color: #FFBCB5; /* Corazón rosa suave */
+    color: #6F6134; /* Marrón oscuro */
     font-size: 1.5rem;
     cursor: pointer;
     padding: 5px;
@@ -56,9 +106,9 @@
 }
 
 .favorite-button.active {
-    color: #E1C68F; /* Corazón terracota cuando está activo */
+    color: #E1C68F; /* Beige dorado */
 }
 
 .favorite-button:hover {
-    color: #E1C68F; /* Corazón terracota al hacer hover */
+    color: #E1C68F; /* Beige dorado */
 }
