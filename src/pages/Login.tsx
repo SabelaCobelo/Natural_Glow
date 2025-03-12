@@ -60,9 +60,10 @@ const Login: React.FC = () => {
                         />
                     </div>
 
+                    {/* Botón de inicio de sesión con nuevo color */}
                     <button
                         type="submit"
-                        className="w-full py-3 bg-primary text-white font-semibold rounded-md hover:bg-[#6F6134] transition-colors"
+                        className="w-full py-3 bg-[#6F6134] text-white font-semibold rounded-md hover:bg-[#5A4D2B] transition-colors"
                     >
                         Iniciar sesión
                     </button>
