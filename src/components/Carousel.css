@@ -1,0 +1,32 @@
+/* Estilos para las flechas de navegación */
+.swiper-button-next,
+.swiper-button-prev {
+    color: #6F6134; /* Color de la paleta (marrón dorado) */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    color: #5A4D2B; /* Color más oscuro al hacer hover */
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo más opaco al hacer hover */
+}
+
+/* Estilos para los puntos de paginación */
+.swiper-pagination-bullet {
+    background-color: #6F6134; /* Color de la paleta (marrón dorado) */
+    opacity: 0.5;
+    width: 10px;
+    height: 10px;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: #5A4D2B; /* Color más oscuro para el punto activo */
+    opacity: 1;
+}
