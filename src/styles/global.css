@@ -1,4 +1,6 @@
 /* Estilos globales */
+@import "tailwindcss";
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -45,7 +47,6 @@ footer {
     color: #FAE7C9; /* Texto beige claro */
     text-align: center;
     padding: 1rem;
-    position: fixed;
     bottom: 0;
     width: 100%;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
@@ -179,4 +180,44 @@ footer a:hover {
 
 .favorite-button:hover {
     color: #6F6134; /* Marrón oscuro */
+}
+
+/* Paleta de colores */
+:root {
+    --primary: #6F6134; /* Marrón oscuro */
+    --secondary: #E1C68F; /* Beige dorado */
+    --background: #FAE7C9; /* Beige claro */
+}
+
+
+.text-primary {
+    color: var(--primary);
+}
+
+.text-secondary {
+    color: var(--secondary);
+}
+
+/* Estilos del carrusel */
+.swiper-container {
+    max-width: 100%;
+}
+
+.swiper-slide img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Estilos de la sección hero */
+.hero-section {
+    background: url('/img/hero-bg.jpg') no-repeat center center/cover;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--primary);
+    border-radius: 10px;
+    margin-bottom: 40px;
 }

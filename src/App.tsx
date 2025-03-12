@@ -5,6 +5,8 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Productos from './pages/Productos';
 import Contacto from './pages/Contacto';
+import Login from './pages/Login';
+import Register from './pages/Register'; // Importa el componente Register
 
 const App: React.FC = () => {
   return (
@@ -14,6 +16,8 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/productos" element={<Productos />} />
         <Route path="/contacto" element={<Contacto />} />
+        <Route path="/login" element={<Login />} /> {/* Ruta para login */}
+        <Route path="/register" element={<Register />} /> {/* Ruta para registro */}
       </Routes>
       <Footer />
     </Router>

@@ -64,7 +64,6 @@ const Productos: React.FC = () => {
     return (
         <div className="productos-container">
             <h2>Nuestra línea de productos orgánicos</h2>
-            <p>Adéntrate en nuestras diferentes gamas de productos.</p>
             <div className="product-grid">
                 {products.map((product) => (
                     <div key={product.id} className="product-card">
