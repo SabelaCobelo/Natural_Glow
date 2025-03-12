@@ -68,13 +68,18 @@ const Login: React.FC = () => {
                     </button>
                 </form>
 
-                {/* Opción para autenticación con Google */}
+                {/* Botón de Google moderno y atractivo */}
                 <div className="text-center mt-4">
                     <button
                         onClick={() => console.log("Autenticación con Google")}
-                        className="w-full py-3 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition-colors"
+                        className="w-full flex items-center justify-center gap-2 py-3 bg-white text-gray-700 font-semibold rounded-md border border-gray-300 hover:bg-gray-50 transition-colors"
                     >
-                        Iniciar sesión con Google
+                        <img
+                            src="/public/img/rrss/google.png"
+                            alt="Google Logo"
+                            className="w-5 h-5"
+                        />
+                        <span>Iniciar sesión con Google</span>
                     </button>
                 </div>
 
