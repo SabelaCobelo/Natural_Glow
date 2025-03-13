@@ -1,114 +1,36 @@
-.productos-container {
-    font-family: 'Arial', sans-serif;
-    color: #333;
+/* Estilos generales */
+.container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    text-align: center;
 }
 
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.product-card {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.product-card:hover {
-    transform: translateY(-10px);
-}
-
-.product-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-.product-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.product-card p {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.product-price {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #6F6134; /* Marrón oscuro */
-    margin-bottom: 15px;
-}
-
-.quantity-selector {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.quantity-selector button {
-    background-color: #6F6134; /* Marrón oscuro */
+/* Estilos para los botones de paginación */
+.pagination-button {
+    background-color: #6F6134;
     color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-.quantity-selector button:hover {
-    background-color: #5A4D2B; /* Marrón más oscuro */
-}
-
-.quantity-selector span {
-    font-size: 1.2rem;
-}
-
-.buy-button {
-    background-color: #6F6134; /* Marrón oscuro */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin: 0 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-right: 10px;
 }
 
-.buy-button:hover {
-    background-color: #5A4D2B; /* Marrón más oscuro */
+.pagination-button:hover {
+    background-color: #5A4D2B;
 }
 
-.favorite-button {
-    background: none;
-    border: none;
-    color: #6F6134; /* Marrón oscuro */
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 5px;
-    transition: color 0.3s ease;
+/* Estilos para los filtros */
+.filter-select {
+    padding: 8px;
+    border: 1px solid #6F6134;
+    border-radius: 8px;
+    margin-right: 8px;
 }
 
-.favorite-button.active {
-    color: #E1C68F; /* Beige dorado */
-}
-
-.favorite-button:hover {
-    color: #E1C68F; /* Beige dorado */
+.filter-input {
+    padding: 8px;
+    border: 1px solid #6F6134;
+    border-radius: 8px;
+    margin-right: 8px;
 }

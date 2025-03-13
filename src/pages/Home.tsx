@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Carousel from "../components/Carousel";
+import { useAuth } from "../context/AuthContext";
 
 const images = [
     "/img/Natural_Glow_Models/model1.jpg",
@@ -10,13 +12,40 @@ const images = [
 ];
 
 const Home: React.FC = () => {
+    const { isLoggedIn } = useAuth();
+
+    // Lista de productos destacados (puedes reemplazar con datos dinámicos)
+    const featuredProducts = [
+        {
+            id: 1,
+            name: "Crema Facial Hidratante",
+            description: "Hidratante natural con aloe vera y aceite de jojoba.",
+            image: "/public/img/productshome/cream.jpg",
+            price: 25.99,
+        },
+        {
+            id: 2,
+            name: "Shampoo Natural",
+            description: "Fortalece y nutre tu cabello con ingredientes orgánicos.",
+            image: "/public/img/productshome/shampoo.jpg",
+            price: 18.99,
+        },
+        {
+            id: 3,
+            name: "Aceite Corporal",
+            description: "Hidratación profunda con aceite de coco y almendras.",
+            image: "/public/img/productshome/oil.jpg",
+            price: 22.99,
+        },
+    ];
+
     return (
         <div className="bg-gradient-to-b from-[#F9F5F0] to-white">
             {/* Sección principal */}
             <div className="container mx-auto px-4 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     {/* Izquierda: Texto de presentación */}
-                    <div className="space-y-6 text-center"> {/* Añadí text-center aquí */}
+                    <div className="space-y-6 text-center">
                         <h1 className="text-5xl font-bold text-[#6F6134]">
                             Natural Glow
                         </h1>
@@ -26,15 +55,49 @@ const Home: React.FC = () => {
                         <p className="text-lg text-[#5A4D2B] leading-relaxed">
                             Nuestra misión es transformar tu rutina de belleza con ingredientes naturales de la más alta calidad, respetuosos con tu piel y con el medio ambiente. No creemos en soluciones temporales, sino en un compromiso a largo plazo con la autenticidad, la sostenibilidad y el bienestar.
                         </p>
-                        <button className="bg-[#6F6134] text-white px-8 py-3 rounded-lg hover:bg-[#5A4D2B] transition-colors transform hover:scale-105">
-                            Descubre más
-                        </button>
+                        <div className="flex justify-center gap-4">
+                            <button className="bg-[#6F6134] text-white px-8 py-3 rounded-lg hover:bg-[#5A4D2B] transition-colors transform hover:scale-105">
+                                Descubre más
+                            </button>
+                            {isLoggedIn && (
+                                <Link
+                                    to="/cart"
+                                    className="bg-[#E1C68F] text-[#6F6134] px-8 py-3 rounded-lg hover:bg-[#D4B57D] transition-colors transform hover:scale-105"
+                                >
+                                    Ver Carrito
+                                </Link>
+                            )}
+                        </div>
                     </div>
 
                     {/* Derecha: Carrusel de imágenes */}
                     <div className="w-full max-w-lg mx-auto">
                         <Carousel images={images} />
                     </div>
+                </div>
+            </div>
+
+            {/* Sección de productos destacados */}
+            <div className="container mx-auto px-4 py-16">
+                <h2 className="text-3xl font-bold text-[#6F6134] text-center mb-8">
+                    Productos Destacados
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {featuredProducts.map((product) => (
+                        <div key={product.id} className="bg-white p-6 rounded-lg shadow-md text-center transform transition duration-500 hover:scale-105">
+                            <img
+                                src={product.image}
+                                alt={product.name}
+                                className="w-full h-48 object-cover rounded-lg mb-4"
+                            />
+                            <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
+                            <p className="text-[#5A4D2B] mt-2">{product.description}</p>
+                            <p className="text-[#6F6134] font-bold mt-2">${product.price.toFixed(2)}</p>
+                            <button className="bg-[#6F6134] text-white px-6 py-2 rounded-lg mt-4 hover:bg-[#5A4D2B] transition-colors">
+                                Añadir al Carrito
+                            </button>
+                        </div>
+                    ))}
                 </div>
             </div>
 
