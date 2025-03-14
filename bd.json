@@ -1,0 +1,73 @@
+[
+    {
+      "category": "Cuidado Corporal",
+      "description": "Hidratación intensiva con aceite de almendras dulces y vitamina E.",
+      "image": "/img/cosmetic8.jpg",
+      "name": "Aceite Corporal",
+      "price": 34.99
+    },
+    {
+      "category": "Cuidado Corporal",
+      "description": "Crema de aloe vera para piel sensible y reparación profunda.",
+      "image": "/img/cosmetic9.jpg",
+      "name": "Crema Aloe Vera",
+      "price": 29.99
+    },
+    {
+      "category": "Cuidado Corporal",
+      "description": "Gel reafirmante con extracto de café y té verde.",
+      "image": "/img/cosmetic10.jpg",
+      "name": "Gel Reafirmante",
+      "price": 42.50
+    },
+    {
+      "category": "Cuidado Corporal",
+      "description": "Loción corporal con aceite de coco para una piel suave y nutrida.",
+      "image": "/img/cosmetic11.jpg",
+      "name": "Loción de Coco",
+      "price": 24.99
+    },
+    {
+      "category": "Cuidado Corporal",
+      "description": "Exfoliante corporal con sal marina y extracto de naranja.",
+      "image": "/img/cosmetic12.jpg",
+      "name": "Exfoliante Naranja",
+      "price": 19.99
+    },
+    {
+      "category": "Cuidado Corporal",
+      "description": "Manteca corporal ultra hidratante con cacao y karité.",
+      "image": "/img/cosmetic13.jpg",
+      "name": "Manteca Cacao y Karité",
+      "price": 39.99
+    },
+    {
+      "category": "Cuidado Corporal",
+      "description": "Aceite de jojoba para hidratación profunda y reparación de piel dañada.",
+      "image": "/img/cosmetic14.jpg",
+      "name": "Aceite de Jojoba",
+      "price": 29.50
+    },
+    {
+      "category": "Cuidado Corporal",
+      "description": "Crema de manos nutritiva con extracto de oliva y aloe vera.",
+      "image": "/img/cosmetic15.jpg",
+      "name": "Crema de Manos Oliva",
+      "price": 18.99
+    },
+    {
+      "category": "Cuidado Corporal",
+      "description": "Aceite de rosa mosqueta para rejuvenecimiento y cicatrización de la piel.",
+      "image": "/img/cosmetic16.jpg",
+      "name": "Aceite Rosa Mosqueta",
+      "price": 37.99
+    },
+    {
+      "category": "Cuidado Corporal",
+      "description": "Sérum hidratante corporal con ácido hialurónico y extractos naturales.",
+      "image": "/img/cosmetic17.jpg",
+      "name": "Sérum Hidratante",
+      "price": 44.99
+    }
+  ]
+  
