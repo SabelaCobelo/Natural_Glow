@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from '../../firebase'; // Ajusta la ruta según la ubicación del archivo
+import { collection, getDocs } from 'firebase/firestore';
 
 interface Product {
     id: string;
@@ -18,6 +20,30 @@ const Productos: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [priceRange, setPriceRange] = useState({ min: 0, max: 100 });
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+    const [products, setProducts] = useState<Product[]>([]); // Estado para almacenar los productos
+    const [loading, setLoading] = useState(true); // Estado para manejar la carga
+    const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+
+    // Obtener los productos desde Firestore
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'products'));
+                const productsData = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                })) as Product[];
+                setProducts(productsData);
+            } catch (err) {
+                setError('Error cargando productos');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
 
     const handleQuantityChange = (productId: string, quantity: number) => {
         setQuantities((prev) => ({ ...prev, [productId]: quantity }));
@@ -29,105 +55,6 @@ const Productos: React.FC = () => {
             [productId]: !prev[productId],
         }));
     };
-
-    const products: Product[] = [
-        {
-            id: '1',
-            name: 'Crema Hidratante',
-            description: 'Hidratación profunda con aloe vera y aceite de coco.',
-            price: 39.99,
-            image: '/img/cosmetic1.jpg',
-            category: 'Cuidado Facial',
-        },
-        {
-            id: '2',
-            name: 'Jabón Natural',
-            description: 'Limpieza suave con aceites esenciales y manteca de karité.',
-            price: 15.99,
-            image: '/img/cosmetic2.jpg',
-            category: 'Cuidado Corporal',
-        },
-        {
-            id: '3',
-            name: 'Serum Facial',
-            description: 'Revitaliza tu piel con vitamina C y ácido hialurónico.',
-            price: 45.99,
-            image: '/img/cosmetic3.jpg',
-            category: 'Cuidado Facial',
-        },
-        {
-            id: '4',
-            name: 'Serum de péptidos',
-            description: 'Nutrición intensiva con aceite de argán y rosa mosqueta.',
-            price: 29.99,
-            image: '/img/cosmetic4.jpg',
-            category: 'Cuidado Facial',
-        },
-        {
-            id: '5',
-            name: 'Mascarilla Facial',
-            description: 'Purifica y rejuvenece con arcilla verde y té matcha.',
-            price: 22.99,
-            image: '/img/cosmetic5.jpg',
-            category: 'Cuidado Facial',
-        },
-        {
-            id: '6',
-            name: 'Aceites esenciales',
-            description: 'Elimina células muertas con azúcar de caña y aceite de almendras.',
-            price: 99.99,
-            image: '/img/cosmetic6.jpg',
-            category: 'Aceites',
-        },
-        {
-            id: '7',
-            name: 'Tónico Facial',
-            description: 'Equilibra y refresca tu piel con extractos naturales de té verde y manzanilla.',
-            price: 19.99,
-            image: '/img/cosmetic7.jpg',
-            category: 'Cuidado Facial',
-        },
-        {
-            id: '8',
-            name: 'Aceite Corporal',
-            description: 'Hidratación intensiva con aceite de almendras dulces y vitamina E.',
-            price: 34.99,
-            image: '/img/cosmetic8.jpg',
-            category: 'Cuidado Corporal',
-        },
-        {
-            id: '9',
-            name: 'Limpiador Facial',
-            description: 'Limpia profundamente sin resecar, ideal para todo tipo de piel.',
-            price: 27.99,
-            image: '/img/cosmetic9.jpg',
-            category: 'Cuidado Facial',
-        },
-        {
-            id: '10',
-            name: 'Jabón Corporal',
-            description: 'Limpieza suave con aceite de oliva y manteca de karité.',
-            price: 12.99,
-            image: '/img/cosmetic10.jpg',
-            category: 'Cuidado Corporal',
-        },
-        {
-            id: '11',
-            name: 'Aceite para el Cabello',
-            description: 'Fortalece y nutre tu cabello con aceite de argán y coco.',
-            price: 29.99,
-            image: '/img/cosmetic11.jpg',
-            category: 'Aceites',
-        },
-        {
-            id: '12',
-            name: 'Serum Milagroso',
-            description: 'Combate los signos del envejecimiento con antioxidantes naturales.',
-            price: 49.99,
-            image: '/img/cosmetic12.jpg',
-            category: 'Cuidado Facial',
-        },
-    ];
 
     // Filtrar productos por término de búsqueda, categoría y rango de precios
     const filteredProducts = products.filter(
@@ -160,6 +87,15 @@ const Productos: React.FC = () => {
     const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+    // Mostrar mensaje de carga o error
+    if (loading) {
+        return <div className="text-center py-8">Cargando productos...</div>;
+    }
+
+    if (error) {
+        return <div className="text-center py-8 text-red-500">{error}</div>;
+    }
 
     return (
         <div className="container mx-auto px-4 py-8">

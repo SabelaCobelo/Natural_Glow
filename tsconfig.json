@@ -1,7 +1,18 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "target": "ES6", // Especifica la versión de ECMAScript a la que compilar
+    "module": "ESNext", // Usa módulos ESNext (import/export)
+    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Incluye las bibliotecas necesarias
+    "allowJs": true, // Permite que TypeScript procese archivos .js
+    "skipLibCheck": true, // Omite la verificación de tipos en archivos de declaración
+    "esModuleInterop": true, // Habilita la interoperabilidad de módulos
+    "strict": true, // Habilita todas las opciones de comprobación estricta
+    "forceConsistentCasingInFileNames": true, // Fuerza el uso de mayúsculas/minúsculas consistentes en nombres de archivos
+    "moduleResolution": "node", // Usa la resolución de módulos de Node.js
+    "resolveJsonModule": true, // Permite importar archivos JSON como módulos
+    "isolatedModules": true, // Asegura que cada archivo sea un módulo independiente
+    "noEmit": true, // No genera archivos de salida (útil para desarrollo)
+    "jsx": "react-jsx" // Habilita soporte para JSX (si estás usando React)
+  },
+  "include": ["src"] // Incluye todos los archivos en la carpeta src
 }

@@ -30,6 +30,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "firebase.js", "uploadProducts.js"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }
