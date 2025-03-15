@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { auth, googleProvider, signInWithPopup } from "../../firebase.js"; // Ajusta la ruta según tu estructura
+import { auth, googleProvider, signInWithPopup } from "../../firebase.js";
 
 const Login: React.FC = () => {
     const { login } = useAuth();
@@ -51,7 +50,7 @@ const Login: React.FC = () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
-            console.log("Usuario registrado con Google:", user);
+            console.log("Usuario autenticado con Google:", user);
             navigate("/cart"); // Redirige al carrito después del inicio de sesión
         } catch (error: any) {
             setError("Error al iniciar sesión con Google.");
@@ -72,7 +71,10 @@ const Login: React.FC = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        <label
+                            htmlFor="email"
+                            className="block text-sm font-medium text-gray-700"
+                        >
                             Correo electrónico
                         </label>
                         <input
@@ -87,7 +89,10 @@ const Login: React.FC = () => {
                     </div>
 
                     <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                        <label
+                            htmlFor="password"
+                            className="block text-sm font-medium text-gray-700"
+                        >
                             Contraseña
                         </label>
                         <input
@@ -104,18 +109,11 @@ const Login: React.FC = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`w-full py-3 bg-[#6F6134] text-white font-semibold rounded-md hover:bg-[#5A4D2B] transition-colors flex items-center justify-center ${
-                            loading ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
+                        className={`w-full py-3 bg-[#6F6134] text-white font-semibold rounded-md hover:bg-[#5A4D2B] transition-colors flex items-center justify-center ${loading ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
                     >
                         {loading ? (
-                            <div className="w-8 h-8">
-                                <DotLottieReact
-                                    src="https://lottie.host/50b44765-60d1-402c-86eb-e2ff44a39b76/KLdxcMOEnq.lottie"
-                                    loop
-                                    autoplay
-                                />
-                            </div>
+                            <div className="w-8 h-8 border-4 border-white border-t-4 border-t-transparent rounded-full animate-spin"></div>
                         ) : (
                             "Iniciar sesión"
                         )}
@@ -135,14 +133,24 @@ const Login: React.FC = () => {
                     <button
                         onClick={handleGoogleSignIn}
                         disabled={loading}
-                        className="w-full py-3 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition-colors flex items-center justify-center"
+                        className={`w-full py-3 bg-white text-gray-800 font-semibold rounded-md border border-gray-300 hover:border-gray-400 hover:shadow-md transition-all flex items-center justify-center ${loading ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
                     >
-                        <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                            alt="Google Logo"
-                            className="w-6 h-6 mr-2"
-                        />
-                        Iniciar sesión con Google
+                        {loading ? (
+                            <div className="flex items-center">
+                                <div className="w-6 h-6 border-4 border-gray-800 border-t-4 border-t-transparent rounded-full animate-spin"></div>
+                                <span className="ml-2">Cargando...</span>
+                            </div>
+                        ) : (
+                            <>
+                                <img
+                                    src="/img/rrss/google.png"
+                                    alt="Google Logo"
+                                    className="w-6 h-6 mr-2"
+                                />
+                                Iniciar sesión con Google
+                            </>
+                        )}
                     </button>
                 </div>
             </div>

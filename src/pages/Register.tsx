@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import { auth, googleProvider, signInWithPopup } from "../../firebase.js"; // Ajusta la ruta según tu estructura
+import { auth, googleProvider, signInWithPopup } from "../../firebase.js";
 
 const Register: React.FC = () => {
     const { register } = useAuth();
@@ -137,7 +137,11 @@ const Register: React.FC = () => {
                             loading ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                     >
-                        {loading ? "Registrando..." : "Registrarse"}
+                        {loading ? (
+                            <div className="w-8 h-8 border-4 border-white border-t-4 border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                            "Registrarse"
+                        )}
                     </button>
                 </form>
 
@@ -154,14 +158,25 @@ const Register: React.FC = () => {
                     <button
                         onClick={handleGoogleSignIn}
                         disabled={loading}
-                        className="w-full py-3 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition-colors flex items-center justify-center"
+                        className={`w-full py-3 bg-white text-gray-800 font-semibold rounded-md border border-gray-300 hover:border-gray-400 hover:shadow-md transition-all flex items-center justify-center ${
+                            loading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                     >
-                        <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                            alt="Google Logo"
-                            className="w-6 h-6 mr-2"
-                        />
-                        Registrarse con Google
+                        {loading ? (
+                            <div className="flex items-center">
+                                <div className="w-6 h-6 border-4 border-gray-800 border-t-4 border-t-transparent rounded-full animate-spin"></div>
+                                <span className="ml-2">Cargando...</span>
+                            </div>
+                        ) : (
+                            <>
+                                <img
+                                    src="/img/rrss/google.png"
+                                    alt="Google Logo"
+                                    className="w-6 h-6 mr-2"
+                                />
+                                Registrarse con Google
+                            </>
+                        )}
                     </button>
                 </div>
             </div>
