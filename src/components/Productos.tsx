@@ -83,8 +83,8 @@ const Productos: React.FC = () => {
         }
     });
 
-    // Identificar los 2 productos con el menor precio para la etiqueta de oferta
-    const productsWithOffers = [...sortedProducts]
+    // Identificar los 2 productos con el menor precio para la etiqueta de oferta (usando la lista completa de productos)
+    const productsWithOffers = [...products]
         .sort((a, b) => a.price - b.price) // Ordenar por precio ascendente
         .slice(0, 2) // Tomar los 2 más baratos
         .map((product) => product.id); // Obtener sus IDs
@@ -194,7 +194,7 @@ const Productos: React.FC = () => {
                                 alt={product.name}
                                 className="w-full h-48 object-cover rounded-lg mb-4 transform hover:scale-110 transition-transform"
                             />
-                            {/* Mostrar etiqueta de oferta solo en los 2 productos más baratos */}
+                            {/* Mostrar etiqueta de oferta solo en los 2 productos más baratos de la lista completa */}
                             {productsWithOffers.includes(product.id) && (
                                 <span className="absolute top-2 right-2 bg-red-500 text-white text-sm px-2 py-1 rounded-full">
                                     Oferta
