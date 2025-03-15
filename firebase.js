@@ -1,10 +1,12 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getDatabase } from 'firebase/database';
+import { getAuth } from "firebase/auth";
 
 // Configuración de Firebase desde variables de entorno
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
     projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
     storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
@@ -14,6 +16,11 @@ const firebaseConfig = {
 
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
-export { app, db };
+// Obtén la instancia de la base de datos
+const db = getDatabase(app);
+
+// Obtén la instancia de autenticación
+const auth = getAuth(app);
+
+export { db, auth };

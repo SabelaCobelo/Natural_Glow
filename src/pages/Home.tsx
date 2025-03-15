@@ -1,7 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 
 const images = [
     "/img/Natural_Glow_Models/model1.jpg",
@@ -11,33 +12,64 @@ const images = [
     "/img/Natural_Glow_Models/model8.jpg",
 ];
 
+interface Product {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+}
+
 const Home: React.FC = () => {
     const { isLoggedIn } = useAuth();
+    const { addToCart } = useCart();
+    const navigate = useNavigate();
 
-    // Lista de productos destacados (puedes reemplazar con datos dinámicos)
-    const featuredProducts = [
+    // Lista de productos destacados
+    const featuredProducts: Product[] = [
         {
             id: 1,
             name: "Crema Facial Hidratante",
             description: "Hidratante natural con aloe vera y aceite de jojoba.",
-            image: "/public/img/productshome/cream.jpg",
+            image: "/img/productshome/cream.jpg",
             price: 25.99,
         },
         {
             id: 2,
             name: "Shampoo Natural",
             description: "Fortalece y nutre tu cabello con ingredientes orgánicos.",
-            image: "/public/img/productshome/shampoo.jpg",
+            image: "/img/productshome/shampoo.jpg",
             price: 18.99,
         },
         {
             id: 3,
             name: "Aceite Corporal",
             description: "Hidratación profunda con aceite de coco y almendras.",
-            image: "/public/img/productshome/oil.jpg",
+            image: "/img/productshome/oil.jpg",
             price: 22.99,
         },
     ];
+
+    // Estado para la cantidad de cada producto
+    const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
+
+    // Función para manejar la adición al carrito
+    const handleAddToCart = (product: Product) => {
+        if (!isLoggedIn) {
+            alert("Debes iniciar sesión para añadir productos al carrito.");
+            navigate("/login");
+            return;
+        }
+
+        const quantity = quantities[product.id] || 1; // Cantidad predeterminada: 1
+        addToCart({ ...product, quantity }); // Añade el producto con la cantidad
+        alert(`${quantity} ${product.name}(s) se ha(n) añadido al carrito.`);
+    };
+
+    // Función para actualizar la cantidad
+    const handleQuantityChange = (productId: number, quantity: number) => {
+        setQuantities((prev) => ({ ...prev, [productId]: quantity }));
+    };
 
     return (
         <div className="bg-gradient-to-b from-[#F9F5F0] to-white">
@@ -92,8 +124,32 @@ const Home: React.FC = () => {
                             />
                             <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
                             <p className="text-[#5A4D2B] mt-2">{product.description}</p>
-                            <p className="text-[#6F6134] font-bold mt-2">${product.price.toFixed(2)}</p>
-                            <button className="bg-[#6F6134] text-white px-6 py-2 rounded-lg mt-4 hover:bg-[#5A4D2B] transition-colors">
+                            <p className="text-[#6F6134] font-bold mt-2">
+                                {product.price.toFixed(2)} € {/* Cambio aquí: símbolo del euro */}
+                            </p>
+
+                            {/* Selector de cantidad (igual al de la página de Productos) */}
+                            <div className="flex items-center justify-center gap-2 mb-4">
+                                <button
+                                    onClick={() => handleQuantityChange(product.id, Math.max(1, (quantities[product.id] || 1) - 1))}
+                                    className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
+                                >
+                                    -
+                                </button>
+                                <span className="text-lg text-[#6F6134]">{quantities[product.id] || 1}</span>
+                                <button
+                                    onClick={() => handleQuantityChange(product.id, (quantities[product.id] || 1) + 1)}
+                                    className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
+                                >
+                                    +
+                                </button>
+                            </div>
+
+                            {/* Botón para añadir al carrito */}
+                            <button
+                                onClick={() => handleAddToCart(product)}
+                                className="bg-[#6F6134] text-white px-6 py-2 rounded-lg mt-4 hover:bg-[#5A4D2B] transition-colors"
+                            >
                                 Añadir al Carrito
                             </button>
                         </div>
@@ -113,7 +169,7 @@ const Home: React.FC = () => {
                         {/* Línea Facial */}
                         <div className="text-center flex flex-col items-center justify-center transform transition duration-500 hover:scale-105">
                             <img
-                                src="/public/img/lineas/linea1.jpg"
+                                src="/img/lineas/linea1.jpg"
                                 alt="Línea Facial"
                                 className="w-64 h-64 object-cover rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-110 hover:rotate-3"
                             />
@@ -128,7 +184,7 @@ const Home: React.FC = () => {
                         {/* Línea Capilar */}
                         <div className="text-center flex flex-col items-center justify-center transform transition duration-500 hover:scale-105">
                             <img
-                                src="/public/img/lineas/linea2.jpg"
+                                src="/img/lineas/linea2.jpg"
                                 alt="Línea Capilar"
                                 className="w-64 h-64 object-cover rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-110 hover:rotate-3"
                             />
@@ -143,7 +199,7 @@ const Home: React.FC = () => {
                         {/* Línea Corporal */}
                         <div className="text-center flex flex-col items-center justify-center transform transition duration-500 hover:scale-105">
                             <img
-                                src="/public/img/lineas/linea3.jpg"
+                                src="/img/lineas/linea3.jpg"
                                 alt="Línea Corporal"
                                 className="w-64 h-64 object-cover rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-110 hover:rotate-3"
                             />

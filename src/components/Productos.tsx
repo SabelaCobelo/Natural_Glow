@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase'; // Ajusta la ruta según la ubicación del archivo
-import { collection, getDocs } from 'firebase/firestore';
+import { ref, onValue } from 'firebase/database';
 
 interface Product {
     id: string;
@@ -20,29 +20,32 @@ const Productos: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [priceRange, setPriceRange] = useState({ min: 0, max: 100 });
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-    const [products, setProducts] = useState<Product[]>([]); // Estado para almacenar los productos
-    const [loading, setLoading] = useState(true); // Estado para manejar la carga
-    const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    // Obtener los productos desde Firestore
+    // Obtener los productos desde Realtime Database
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, 'products'));
-                const productsData = querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
+        const productsRef = ref(db, 'Producto'); // Cambia 'Producto' por la ruta correcta en tu base de datos
+
+        onValue(productsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                // Convertir el objeto de productos en un array
+                const productsData = Object.keys(data).map((key) => ({
+                    id: key, // Usar el ID generado por Firebase
+                    ...data[key], // Copiar el resto de los campos
                 })) as Product[];
                 setProducts(productsData);
-            } catch (err) {
-                setError('Error cargando productos');
-                console.error(err);
-            } finally {
-                setLoading(false);
+            } else {
+                setError('No se encontraron productos.');
             }
-        };
-
-        fetchProducts();
+            setLoading(false);
+        }, (err) => {
+            console.error("Error al cargar productos:", err);
+            setError('Error cargando productos');
+            setLoading(false);
+        });
     }, []);
 
     const handleQuantityChange = (productId: string, quantity: number) => {

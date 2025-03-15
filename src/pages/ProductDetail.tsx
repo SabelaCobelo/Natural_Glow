@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 
@@ -10,12 +10,18 @@ interface Product {
     description: string;
     price: number;
     image: string;
+    category?: string; // Campo opcional
+    stock?: number; // Campo opcional
+    brand?: string; // Campo opcional
+    ingredients?: string[]; // Campo opcional
+    benefits?: string[]; // Campo opcional
 }
 
 const ProductDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // Obtén el ID del producto desde la URL
     const { isLoggedIn } = useAuth(); // Estado de autenticación desde el contexto
     const { addToCart } = useCart(); // Función para añadir productos al carrito
+    const navigate = useNavigate(); // Hook para navegación programática
 
     const [product, setProduct] = useState<Product | null>(null); // Estado para almacenar los detalles del producto
     const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga
@@ -54,7 +60,6 @@ const ProductDetail: React.FC = () => {
         };
 
         addToCart(cartItem); // Añade el producto al carrito
-        console.log("Producto añadido al carrito:", product.name);
         alert(`${product.name} ha sido añadido al carrito.`); // Mensaje de confirmación
     };
 
@@ -89,19 +94,37 @@ const ProductDetail: React.FC = () => {
                 <div className="space-y-6">
                     <h1 className="text-4xl font-bold text-[#6F6134]">{product.name}</h1>
                     <p className="text-lg text-[#5A4D2B]">{product.description}</p>
-                    <p className="text-2xl font-bold text-[#6F6134]">${product.price.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-[#6F6134]">
+                        {product.price.toFixed(2)} € {/* Precio con símbolo del euro */}
+                    </p>
 
                     {/* Campos adicionales del producto */}
                     <div className="space-y-2">
-                        <p>
-                            <span className="font-semibold">Categoría:</span> {product.category}
-                        </p>
-                        <p>
-                            <span className="font-semibold">Stock:</span> {product.stock}
-                        </p>
+                        {product.category && (
+                            <p>
+                                <span className="font-semibold">Categoría:</span> {product.category}
+                            </p>
+                        )}
+                        {product.stock && (
+                            <p>
+                                <span className="font-semibold">Stock:</span> {product.stock}
+                            </p>
+                        )}
                         {product.brand && (
                             <p>
                                 <span className="font-semibold">Marca:</span> {product.brand}
+                            </p>
+                        )}
+                        {product.ingredients && (
+                            <p>
+                                <span className="font-semibold">Ingredientes:</span>{" "}
+                                {product.ingredients.join(", ")}
+                            </p>
+                        )}
+                        {product.benefits && (
+                            <p>
+                                <span className="font-semibold">Beneficios:</span>{" "}
+                                {product.benefits.join(", ")}
                             </p>
                         )}
                     </div>
@@ -115,12 +138,12 @@ const ProductDetail: React.FC = () => {
                             Añadir al Carrito
                         </button>
                     ) : (
-                        <Link
-                            to="/login"
+                        <button
                             className="bg-[#E1C68F] text-[#6F6134] px-8 py-3 rounded-lg hover:bg-[#D4B57D] transition-colors"
+                            onClick={() => navigate("/login")} // Redirige a la página de inicio de sesión
                         >
                             Iniciar Sesión para Comprar
-                        </Link>
+                        </button>
                     )}
                 </div>
             </div>

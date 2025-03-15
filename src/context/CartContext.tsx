@@ -1,62 +1,47 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface CartItem {
     id: number;
     name: string;
     price: number;
-    quantity: number;
     image: string;
+    quantity: number; // Nuevo campo para la cantidad
 }
 
 interface CartContextType {
-    cartItems: CartItem[];
-    addToCart: (product: CartItem) => void;
-    removeFromCart: (productId: number) => void;
-    clearCart: () => void;
+    cart: CartItem[];
+    addToCart: (item: CartItem) => void;
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext = createContext<CartContextType | null>(null);
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [cart, setCart] = useState<CartItem[]>([]);
 
-    // Función para añadir un producto al carrito
-    const addToCart = (product: CartItem) => {
-        const existingItem = cartItems.find((item) => item.id === product.id);
-
+    const addToCart = (item: CartItem) => {
+        const existingItem = cart.find((cartItem) => cartItem.id === item.id);
         if (existingItem) {
-            // Si el producto ya está en el carrito, incrementa la cantidad
-            setCartItems(
-                cartItems.map((item) =>
-                    item.id === product.id
-                        ? { ...item, quantity: item.quantity + 1 }
-                        : item
+            // Si el producto ya está en el carrito, actualiza la cantidad
+            setCart(
+                cart.map((cartItem) =>
+                    cartItem.id === item.id
+                        ? { ...cartItem, quantity: cartItem.quantity + item.quantity }
+                        : cartItem
                 )
             );
         } else {
-            // Si el producto no está en el carrito, lo añade con cantidad 1
-            setCartItems([...cartItems, { ...product, quantity: 1 }]);
+            // Si el producto no está en el carrito, añádelo
+            setCart([...cart, item]);
         }
     };
 
-    // Función para eliminar un producto del carrito
-    const removeFromCart = (productId: number) => {
-        setCartItems(cartItems.filter((item) => item.id !== productId));
-    };
-
-    // Función para vaciar el carrito
-    const clearCart = () => {
-        setCartItems([]);
-    };
-
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
+        <CartContext.Provider value={{ cart, addToCart }}>
             {children}
         </CartContext.Provider>
     );
 };
 
-// Hook personalizado para usar el contexto del carrito
 export const useCart = () => {
     const context = useContext(CartContext);
     if (!context) {

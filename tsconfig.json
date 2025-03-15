@@ -14,5 +14,5 @@
     "noEmit": true, // No genera archivos de salida (útil para desarrollo)
     "jsx": "react-jsx" // Habilita soporte para JSX (si estás usando React)
   },
-  "include": ["src"] // Incluye todos los archivos en la carpeta src
+  "include": ["src", "firebase.js", "firebase.js"] // Incluye todos los archivos en la carpeta src
 }
