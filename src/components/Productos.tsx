@@ -26,23 +26,28 @@ const Productos: React.FC = () => {
 
     // Obtener los productos desde Realtime Database
     useEffect(() => {
-        const productsRef = ref(db, 'Producto'); // Cambia 'Producto' por la ruta correcta en tu base de datos
-
+        const productsRef = ref(db, 'Producto');
+    
+        console.log("Iniciando la recuperación de datos..."); // Verifica que el useEffect se ejecuta
+    
         onValue(productsRef, (snapshot) => {
             const data = snapshot.val();
+            console.log("Datos recuperados de Firebase:", data); // Verifica los datos crudos
+    
             if (data) {
-                // Convertir el objeto de productos en un array
                 const productsData = Object.keys(data).map((key) => ({
-                    id: key, // Usar el ID generado por Firebase
-                    ...data[key], // Copiar el resto de los campos
+                    id: key,
+                    ...data[key],
                 })) as Product[];
+                console.log("Datos convertidos a array:", productsData); // Verifica los datos convertidos
                 setProducts(productsData);
             } else {
+                console.log("No se encontraron productos en Firebase."); // Verifica si no hay datos
                 setError('No se encontraron productos.');
             }
             setLoading(false);
         }, (err) => {
-            console.error("Error al cargar productos:", err);
+            console.error("Error al cargar productos:", err); // Verifica si hay errores
             setError('Error cargando productos');
             setLoading(false);
         });
