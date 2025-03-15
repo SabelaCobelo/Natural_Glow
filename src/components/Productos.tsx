@@ -27,13 +27,13 @@ const Productos: React.FC = () => {
     // Obtener los productos desde Realtime Database
     useEffect(() => {
         const productsRef = ref(db, 'Producto');
-    
+
         console.log("Iniciando la recuperación de datos..."); // Verifica que el useEffect se ejecuta
-    
+
         onValue(productsRef, (snapshot) => {
             const data = snapshot.val();
             console.log("Datos recuperados de Firebase:", data); // Verifica los datos crudos
-    
+
             if (data) {
                 const productsData = Object.keys(data).map((key) => ({
                     id: key,
@@ -68,7 +68,7 @@ const Productos: React.FC = () => {
     const filteredProducts = products.filter(
         (product) =>
             (product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
+            product.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
             (selectedCategory ? product.category === selectedCategory : true) &&
             product.price >= priceRange.min &&
             product.price <= priceRange.max
@@ -143,15 +143,27 @@ const Productos: React.FC = () => {
                             type="number"
                             placeholder="Mínimo"
                             value={priceRange.min}
-                            onChange={(e) => setPriceRange({ ...priceRange, min: +e.target.value })}
+                            onChange={(e) => {
+                                const value = +e.target.value; // Convertir a número
+                                if (value >= 0) { // Validar que no sea negativo
+                                    setPriceRange({ ...priceRange, min: value });
+                                }
+                            }}
                             className="w-1/2 px-4 py-2 border border-[#6F6134] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6F6134]"
+                            min="0" // Asegurar que el valor mínimo sea 0
                         />
                         <input
                             type="number"
                             placeholder="Máximo"
                             value={priceRange.max}
-                            onChange={(e) => setPriceRange({ ...priceRange, max: +e.target.value })}
+                            onChange={(e) => {
+                                const value = +e.target.value; // Convertir a número
+                                if (value >= 0) { // Validar que no sea negativo
+                                    setPriceRange({ ...priceRange, max: value });
+                                }
+                            }}
                             className="w-1/2 px-4 py-2 border border-[#6F6134] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6F6134]"
+                            min="0" // Asegurar que el valor mínimo sea 0
                         />
                     </div>
 

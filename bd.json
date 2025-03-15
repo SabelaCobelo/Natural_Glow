@@ -43,7 +43,7 @@
       "price": 39.99
     },
     "producto7": {
-      "category": "Cuidado Corporal",
+      "category": "Aceites",
       "description": "Aceite de jojoba para hidratación profunda y reparación de piel dañada.",
       "image": "/img/cosmetic5.jpg",
       "name": "Aceite de Jojoba",
@@ -57,7 +57,7 @@
       "price": 18.99
     },
     "producto9": {
-      "category": "Cuidado Corporal",
+      "category": "Aceites",
       "description": "Aceite de rosa mosqueta para rejuvenecimiento y cicatrización de la piel.",
       "image": "/public/img/cosmetic6.jpg",
       "name": "Aceite Rosa Mosqueta",
