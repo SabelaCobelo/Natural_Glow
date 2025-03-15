@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getDatabase } from 'firebase/database';
-import { getAuth } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 // Configuración de Firebase desde variables de entorno
 const firebaseConfig = {
@@ -23,4 +23,8 @@ const db = getDatabase(app);
 // Obtén la instancia de autenticación
 const auth = getAuth(app);
 
-export { db, auth };
+// Configura el proveedor de Google
+const googleProvider = new GoogleAuthProvider();
+
+// Exporta las instancias y funciones necesarias
+export { db, auth, googleProvider, signInWithPopup };
