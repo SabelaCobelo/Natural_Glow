@@ -6,6 +6,7 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
+    AuthError,
 } from "firebase/auth";
 
 interface AuthContextType {
@@ -42,9 +43,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             await signInWithEmailAndPassword(auth, email, password);
         } catch (error) {
-            console.error("Error al iniciar sesión:", error);
+            const authError = error as AuthError;
+            console.error("Error al iniciar sesión:", authError.message);
             setIsLoading(false); // Finaliza la carga en caso de error
-            throw new Error("Error al iniciar sesión. Verifica tus credenciales.");
+            throw new Error(authError.message || "Error al iniciar sesión. Verifica tus credenciales.");
         } finally {
             setIsLoading(false); // Finaliza la carga en cualquier caso
         }
@@ -56,9 +58,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             await createUserWithEmailAndPassword(auth, email, password);
         } catch (error) {
-            console.error("Error al registrarse:", error);
+            const authError = error as AuthError;
+            console.error("Error al registrarse:", authError.message);
             setIsLoading(false); // Finaliza la carga en caso de error
-            throw new Error("Error al registrarse. Inténtalo de nuevo.");
+            throw new Error(authError.message || "Error al registrarse. Inténtalo de nuevo.");
         } finally {
             setIsLoading(false); // Finaliza la carga en cualquier caso
         }
@@ -70,9 +73,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             await signOut(auth);
         } catch (error) {
-            console.error("Error al cerrar sesión:", error);
+            const authError = error as AuthError;
+            console.error("Error al cerrar sesión:", authError.message);
             setIsLoading(false); // Finaliza la carga en caso de error
-            throw new Error("Error al cerrar sesión. Inténtalo de nuevo.");
+            throw new Error(authError.message || "Error al cerrar sesión. Inténtalo de nuevo.");
         } finally {
             setIsLoading(false); // Finaliza la carga en cualquier caso
         }
@@ -90,7 +94,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return (
         <AuthContext.Provider value={value}>
-            {!isLoading && children} {/* Renderiza los hijos solo cuando no está cargando */}
+            {isLoading ? (
+                <div className="flex justify-center items-center min-h-screen">
+                    <p>Cargando...</p>
+                </div>
+            ) : (
+                children
+            )}
         </AuthContext.Provider>
     );
 };

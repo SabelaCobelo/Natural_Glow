@@ -24,7 +24,7 @@ interface SavedProduct {
 }
 
 const UserProfile: React.FC = () => {
-    const { isLoggedIn, user } = useAuth();
+    const { isLoggedIn, user, logout } = useAuth(); // Asegúrate de que logout esté en tu contexto
     const { addToCart } = useCart();
     const navigate = useNavigate();
     const [orders, setOrders] = useState<Order[]>([]);
@@ -98,6 +98,18 @@ const UserProfile: React.FC = () => {
         }
     };
 
+    // Función para manejar el logout
+    const handleLogout = async () => {
+        try {
+            await logout(); // Llama a la función de logout del contexto
+            toast.success("Sesión cerrada correctamente.");
+            navigate("/login"); // Redirige al usuario a la página de login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+            toast.error("Error al cerrar sesión.");
+        }
+    };
+
     useEffect(() => {
         if (!isLoggedIn) {
             toast.info("Debes iniciar sesión para acceder a esta página.");
@@ -110,6 +122,16 @@ const UserProfile: React.FC = () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            {/* Botón de Logout */}
+            <div className="flex justify-end mb-4">
+                <button
+                    onClick={handleLogout}
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                >
+                    Cerrar Sesión
+                </button>
+            </div>
+
             <h1 className="text-3xl font-bold text-[#6F6134] mb-8">Mi Perfil</h1>
 
             {/* Sección de Información del Usuario */}

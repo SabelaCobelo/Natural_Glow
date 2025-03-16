@@ -122,6 +122,12 @@ const Productos: React.FC = () => {
 
     // Función para manejar la compra
     const handleBuy = (product: Product) => {
+        if (!isLoggedIn) {
+            toast.info("Debes iniciar sesión para comprar productos.");
+            navigate("/login");
+            return;
+        }
+
         const cartItem = {
             id: product.id,
             name: product.name,
