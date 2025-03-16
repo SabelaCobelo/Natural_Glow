@@ -92,16 +92,16 @@
         npm run build: Genera una versión optimizada para producción en la carpeta dist.
         npm run preview: Sirve la versión de producción localmente para pruebas.
 
-## 🌟 Capturas de pantalla
+    🌟 Capturas de pantalla
 
-    ### 🏠 Página de inicio
-    ![Página de inicio](public/captures/homecapture.png)
+        ### 🏠 Página de inicio
+        ![Página de inicio](public/captures/homecapture.png)
 
-    ### 🛍️ Página de productos
-    ![Página de productos](public/captures/productscapture.png)
+        ### 🛍️ Página de productos
+        ![Página de productos](public/captures/productscapture.png)
 
-    ### 👤 Página de perfil del usuario
-    ![Página de perfil](public/captures/profilecapture.png)
+        ### 👤 Página de perfil del usuario
+        ![Página de perfil](public/captures/profilecapture.png)
 
 🎨 Paleta de Colores
     Fondo global: #FAE7C9 (beige claro).
