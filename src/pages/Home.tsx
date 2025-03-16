@@ -64,7 +64,7 @@ const Home: React.FC = () => {
         }
 
         const quantity = quantities[product.id] || 1; // Cantidad predeterminada: 1
-        addToCart({ ...product, quantity }); // Añade el producto con la cantidad
+        addToCart({ ...product, id: product.id.toString(), quantity });// Añade el producto con la cantidad
         toast.success(`${quantity} ${product.name}(s) se ha(n) añadido al carrito.`);
     };
 
