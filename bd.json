@@ -84,5 +84,43 @@
       "name": "Mascarilla Purificante",
       "price": 27.99
     }
+  },
+  "users": {
+    "userId1": {
+      "savedProducts": {
+        "producto10": {
+          "category": "Cuidado Corporal",
+          "description": "Sérum hidratante corporal con ácido hialurónico y extractos naturales.",
+          "image": "/public/img/cosmetic7.jpg",
+          "name": "Sérum Hidratante",
+          "price": 44.99
+        },
+        "producto11": {
+          "category": "Cuidado Facial",
+          "description": "Crema facial hidratante con ácido hialurónico y extracto de té verde.",
+          "image": "/img/cosmetic4.jpg",
+          "name": "Crema Facial Hidratante",
+          "price": 49.99
+        },
+        "producto12": {
+          "category": "Cuidado Facial",
+          "description": "Mascarilla purificante con arcilla verde y aceite de árbol de té.",
+          "image": "/img/cosmetic9.jpg",
+          "name": "Mascarilla Purificante",
+          "price": 27.99
+        }
+      }
+    },
+    "userId2": {
+      "savedProducts": {
+        "producto10": {
+          "category": "Cuidado Corporal",
+          "description": "Sérum hidratante corporal con ácido hialurónico y extractos naturales.",
+          "image": "/public/img/cosmetic7.jpg",
+          "name": "Sérum Hidratante",
+          "price": 44.99
+        }
+      }
+    }
   }
 }

@@ -10,8 +10,8 @@ import {
 
 interface AuthContextType {
     user: User | null;
-    isLoggedIn: boolean; // Indica si el usuario está autenticado
-    isLoading: boolean; // Indica si la autenticación está en proceso
+    isLoggedIn: boolean;
+    isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
-    const [isLoading, setIsLoading] = useState(true); // Estado de carga global
+    const [isLoading, setIsLoading] = useState(true);
 
     // Deriva el valor de isLoggedIn del estado user
     const isLoggedIn = !!user;

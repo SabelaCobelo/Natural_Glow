@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase'; // Ajusta la ruta según la ubicación del archivo
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue, set, remove } from 'firebase/database';
 import { useCart } from '../context/CartContext'; // Importa el contexto del carrito
+import { useAuth } from '../context/AuthContext'; // Importa el contexto de autenticación
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
 import { toast } from 'react-toastify'; // Importa toast
 import 'react-toastify/dist/ReactToastify.css'; // Importa los estilos de react-toastify
@@ -29,6 +30,7 @@ const Productos: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     const { addToCart } = useCart(); // Obtén la función addToCart del contexto del carrito
+    const { user, isLoggedIn } = useAuth(); // Obtén el usuario y el estado de autenticación
     const navigate = useNavigate(); // Hook para redirigir al usuario
 
     // Obtener los productos desde Realtime Database
@@ -60,14 +62,53 @@ const Productos: React.FC = () => {
         });
     }, []);
 
+    // Obtener los favoritos del usuario desde Firebase
+    useEffect(() => {
+        if (user) {
+            const favoritesRef = ref(db, `users/${user.uid}/savedProducts`);
+            onValue(favoritesRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const favoritesData = Object.keys(data).reduce((acc, key) => {
+                        acc[key] = true; // Marcar como favorito
+                        return acc;
+                    }, {} as { [key: string]: boolean });
+                    setFavorites(favoritesData);
+                } else {
+                    setFavorites({}); // Si no hay favoritos, establecer un objeto vacío
+                }
+            });
+        }
+    }, [user]);
+
     const handleQuantityChange = (productId: string, quantity: number) => {
         setQuantities((prev) => ({ ...prev, [productId]: quantity }));
     };
 
-    const toggleFavorite = (productId: string) => {
+    // Función para manejar favoritos
+    const toggleFavorite = async (product: Product) => {
+        if (!isLoggedIn) {
+            toast.info("Debes iniciar sesión para guardar productos en favoritos.");
+            navigate("/login");
+            return;
+        }
+
+        const favoriteRef = ref(db, `users/${user.uid}/savedProducts/${product.id}`);
+
+        if (favorites[product.id]) {
+            // Si ya es favorito, eliminarlo
+            await remove(favoriteRef);
+            toast.success("Producto eliminado de favoritos.");
+        } else {
+            // Si no es favorito, agregarlo
+            await set(favoriteRef, product);
+            toast.success("Producto añadido a favoritos.");
+        }
+
+        // Actualizar el estado local
         setFavorites((prev) => ({
             ...prev,
-            [productId]: !prev[productId],
+            [product.id]: !prev[product.id],
         }));
     };
 
@@ -245,7 +286,7 @@ const Productos: React.FC = () => {
                                 </button>
                             </div>
                             <button
-                                onClick={() => toggleFavorite(product.id)}
+                                onClick={() => toggleFavorite(product)} // Pasar el producto completo
                                 className={`text-2xl ${favorites[product.id] ? "text-red-500 animate-bounce" : "text-gray-400"} hover:text-red-500 transition-colors`}
                             >
                                 {favorites[product.id] ? "❤️" : "♡"}

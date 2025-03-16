@@ -3,6 +3,8 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ref, onValue, remove } from "firebase/database";
+import { db } from "../../firebase"; // Ajusta la ruta según tu estructura
 
 interface Order {
     id: string;
@@ -13,9 +15,11 @@ interface Order {
 
 interface SavedProduct {
     id: string;
+    category: string;
+    description: string;
+    image: string;
     name: string;
     price: number;
-    image: string;
 }
 
 const UserProfile: React.FC = () => {
@@ -23,6 +27,42 @@ const UserProfile: React.FC = () => {
     const navigate = useNavigate();
     const [orders, setOrders] = useState<Order[]>([]); // Estado para almacenar los pedidos
     const [savedProducts, setSavedProducts] = useState<SavedProduct[]>([]); // Estado para productos guardados
+
+    // Obtener los productos guardados del usuario desde Firebase
+    const fetchSavedProducts = async () => {
+        if (!user) return;
+        try {
+            const savedProductsRef = ref(db, `users/${user.uid}/savedProducts`);
+            onValue(savedProductsRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const savedProducts = Object.keys(data).map((key) => ({
+                        id: key,
+                        ...data[key],
+                    }));
+                    setSavedProducts(savedProducts);
+                } else {
+                    setSavedProducts([]); // Si no hay datos, establece un arreglo vacío
+                }
+            });
+        } catch (error) {
+            console.error("Error al obtener los productos guardados:", error);
+            toast.error("Error al obtener los productos guardados.");
+        }
+    };
+
+    // Eliminar un producto guardado de Firebase
+    const removeSavedProduct = async (productId: string) => {
+        if (!user) return;
+        try {
+            const productRef = ref(db, `users/${user.uid}/savedProducts/${productId}`);
+            await remove(productRef); // Elimina el producto
+            toast.success("Producto eliminado de guardados.");
+        } catch (error) {
+            console.error("Error al eliminar el producto:", error);
+            toast.error("Error al eliminar el producto.");
+        }
+    };
 
     // Simulación de datos de pedidos (deberías obtenerlos de tu backend)
     const fetchOrders = async () => {
@@ -50,40 +90,6 @@ const UserProfile: React.FC = () => {
         setOrders(mockOrders);
     };
 
-    // Simulación de datos de productos guardados (deberías obtenerlos de tu backend)
-    const fetchSavedProducts = async () => {
-        // Aquí harías una llamada a tu API para obtener los productos guardados del usuario
-        const mockSavedProducts: SavedProduct[] = [
-            {
-                id: "1",
-                name: "Crema Facial Hidratante",
-                price: 25.99,
-                image: "/img/productshome/cream.jpg",
-            },
-            {
-                id: "2",
-                name: "Shampoo Natural",
-                price: 18.99,
-                image: "/img/productshome/shampoo.jpg",
-            },
-            {
-                id: "3",
-                name: "Aceite Corporal",
-                price: 22.99,
-                image: "/img/productshome/oil.jpg",
-            },
-        ];
-        setSavedProducts(mockSavedProducts);
-    };
-
-    // Función para eliminar un producto guardado
-    const removeSavedProduct = (productId: string) => {
-        setSavedProducts((prevProducts) =>
-            prevProducts.filter((product) => product.id !== productId)
-        );
-        toast.success("Producto eliminado de guardados.");
-    };
-
     useEffect(() => {
         if (!isLoggedIn) {
             toast.info("Debes iniciar sesión para acceder a esta página.");
@@ -92,7 +98,7 @@ const UserProfile: React.FC = () => {
             fetchOrders(); // Obtén los pedidos del usuario
             fetchSavedProducts(); // Obtén los productos guardados del usuario
         }
-    }, [isLoggedIn, navigate]);
+    }, [isLoggedIn, navigate, user]);
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -144,7 +150,8 @@ const UserProfile: React.FC = () => {
                                     className="w-full h-32 object-cover rounded-lg mb-4"
                                 />
                                 <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
-                                <p className="text-[#5A4D2B]">Precio: ${product.price.toFixed(2)}</p>
+                                <p className="text-[#5A4D2B]">{product.description}</p>
+                                <p className="text-[#6F6134] font-bold">${product.price.toFixed(2)}</p>
                             </div>
                         ))}
                     </div>
