@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useCart } from "../context/CartContext"; // Importar el contexto del carrito
+import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ref, onValue, remove } from "firebase/database";
-import { db } from "../../firebase"; // Ajusta la ruta según tu estructura
+import { db } from "../../firebase";
 
 interface Order {
     id: string;
@@ -24,15 +24,15 @@ interface SavedProduct {
 }
 
 const UserProfile: React.FC = () => {
-    const { isLoggedIn, user } = useAuth(); // Obtén el estado de autenticación y los datos del usuario
-    const { addToCart } = useCart(); // Obtén la función para añadir productos al carrito
+    const { isLoggedIn, user } = useAuth();
+    const { addToCart } = useCart();
     const navigate = useNavigate();
-    const [orders, setOrders] = useState<Order[]>([]); // Estado para almacenar los pedidos
-    const [savedProducts, setSavedProducts] = useState<SavedProduct[]>([]); // Estado para productos guardados
+    const [orders, setOrders] = useState<Order[]>([]);
+    const [savedProducts, setSavedProducts] = useState<SavedProduct[]>([]);
 
     // Obtener los productos guardados del usuario desde Firebase
     const fetchSavedProducts = async () => {
-        if (!user) return;
+        if (!user) return; // Verifica que el usuario esté autenticado
         try {
             const savedProductsRef = ref(db, `users/${user.uid}/savedProducts`);
             onValue(savedProductsRef, (snapshot) => {
@@ -55,10 +55,11 @@ const UserProfile: React.FC = () => {
 
     // Eliminar un producto guardado de Firebase
     const removeSavedProduct = async (productId: string) => {
-        if (!user) return;
+        if (!user) return; // Verifica que el usuario esté autenticado
         try {
             const productRef = ref(db, `users/${user.uid}/savedProducts/${productId}`);
             await remove(productRef); // Elimina el producto
+            setSavedProducts((prev) => prev.filter((product) => product.id !== productId)); // Actualiza el estado local
             toast.success("Producto eliminado de guardados.");
         } catch (error) {
             console.error("Error al eliminar el producto:", error);
@@ -68,28 +69,33 @@ const UserProfile: React.FC = () => {
 
     // Simulación de datos de pedidos (deberías obtenerlos de tu backend)
     const fetchOrders = async () => {
-        // Aquí harías una llamada a tu API para obtener los pedidos del usuario
-        const mockOrders: Order[] = [
-            {
-                id: "12345",
-                date: "2023-10-01",
-                total: 75.99,
-                items: [
-                    { name: "Crema Facial Hidratante", quantity: 2, price: 25.99 },
-                    { name: "Shampoo Natural", quantity: 1, price: 18.99 },
-                ],
-            },
-            {
-                id: "67890",
-                date: "2023-09-15",
-                total: 45.98,
-                items: [
-                    { name: "Aceite Corporal", quantity: 1, price: 22.99 },
-                    { name: "Crema Facial Hidratante", quantity: 1, price: 25.99 },
-                ],
-            },
-        ];
-        setOrders(mockOrders);
+        try {
+            // Aquí harías una llamada a tu API para obtener los pedidos del usuario
+            const mockOrders: Order[] = [
+                {
+                    id: "12345",
+                    date: "2023-10-01",
+                    total: 75.99,
+                    items: [
+                        { name: "Crema Facial Hidratante", quantity: 2, price: 25.99 },
+                        { name: "Shampoo Natural", quantity: 1, price: 18.99 },
+                    ],
+                },
+                {
+                    id: "67890",
+                    date: "2023-09-15",
+                    total: 45.98,
+                    items: [
+                        { name: "Aceite Corporal", quantity: 1, price: 22.99 },
+                        { name: "Crema Facial Hidratante", quantity: 1, price: 25.99 },
+                    ],
+                },
+            ];
+            setOrders(mockOrders);
+        } catch (error) {
+            console.error("Error al obtener los pedidos:", error);
+            toast.error("Error al obtener los pedidos.");
+        }
     };
 
     useEffect(() => {
@@ -110,7 +116,7 @@ const UserProfile: React.FC = () => {
             <div className="bg-white p-6 rounded-lg shadow-md mb-8">
                 <h2 className="text-2xl font-semibold text-[#6F6134] mb-4">Información del Usuario</h2>
                 <p className="text-[#5A4D2B]">
-                    <strong>Nombre:</strong> {user?.name || "Usuario"}
+                    <strong>Nombre:</strong> {user?.displayName || "Usuario"}
                 </p>
                 <p className="text-[#5A4D2B]">
                     <strong>Email:</strong> {user?.email || "usuario@example.com"}
@@ -125,47 +131,7 @@ const UserProfile: React.FC = () => {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {savedProducts.map((product) => (
-                            <div key={product.id} className="bg-[#F4E9D6] p-4 rounded-lg shadow-md relative">
-                                {/* Botón para eliminar el producto */}
-                                <button
-                                    className="absolute top-2 right-2 text-red-500 hover:text-red-700 transition-colors"
-                                    onClick={() => removeSavedProduct(product.id)}
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                        />
-                                    </svg>
-                                </button>
-                                {/* Botón para añadir al carrito */}
-                                <button
-                                    className="absolute top-2 left-2 text-green-500 hover:text-green-700 transition-colors"
-                                    onClick={() => addToCart(product)} // Añadir al carrito
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                                        />
-                                    </svg>
-                                </button>
+                            <div key={product.id} className="bg-[#F4E9D6] p-4 rounded-lg shadow-md">
                                 <img
                                     src={product.image}
                                     alt={product.name}
@@ -173,7 +139,52 @@ const UserProfile: React.FC = () => {
                                 />
                                 <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
                                 <p className="text-[#5A4D2B]">{product.description}</p>
-                                <p className="text-[#6F6134] font-bold">${product.price.toFixed(2)}</p>
+                                <p className="text-[#6F6134] font-bold mb-4">${product.price.toFixed(2)}</p>
+
+                                {/* Botones debajo del precio */}
+                                <div className="flex justify-between">
+                                    {/* Botón para añadir al carrito */}
+                                    <button
+                                        className="text-green-500 hover:text-green-700 transition-colors"
+                                        onClick={() => addToCart(product)}
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-6 w-6"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                                            />
+                                        </svg>
+                                    </button>
+
+                                    {/* Botón para eliminar el producto */}
+                                    <button
+                                        className="text-red-500 hover:text-red-700 transition-colors"
+                                        onClick={() => removeSavedProduct(product.id)}
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-6 w-6"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>

@@ -283,7 +283,7 @@ const Home: React.FC = () => {
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Testimonio 1 */}
-                    <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                    <div className="bg-[#FAF7F2] p-6 rounded-lg shadow-md text-center">
                         <p className="text-[#5A4D2B] italic">
                             "Los productos de Natural Glow han transformado mi piel. ¡Son increíbles!"
                         </p>
@@ -291,7 +291,7 @@ const Home: React.FC = () => {
                     </div>
 
                     {/* Testimonio 2 */}
-                    <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                    <div className="bg-[#FAF7F2] p-6 rounded-lg shadow-md text-center">
                         <p className="text-[#5A4D2B] italic">
                             "Me encanta que sean cruelty-free y ecológicos. ¡Totalmente recomendados!"
                         </p>
@@ -299,7 +299,7 @@ const Home: React.FC = () => {
                     </div>
 
                     {/* Testimonio 3 */}
-                    <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                    <div className="bg-[#FAF7F2] p-6 rounded-lg shadow-md text-center">
                         <p className="text-[#5A4D2B] italic">
                             "Mi cabello nunca había estado tan saludable. ¡Gracias, Natural Glow!"
                         </p>
