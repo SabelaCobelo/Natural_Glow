@@ -93,14 +93,8 @@
         npm run preview: Sirve la versión de producción localmente para pruebas.
 
     🌟 Capturas de pantalla
-
-        ### 🏠 Página de inicio
         ![Página de inicio](public/captures/homecapture.png)
-
-        ### 🛍️ Página de productos
         ![Página de productos](public/captures/productscapture.png)
-
-        ### 👤 Página de perfil del usuario
         ![Página de perfil](public/captures/profilecapture.png)
 
 🎨 Paleta de Colores
