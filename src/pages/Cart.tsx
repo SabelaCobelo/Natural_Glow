@@ -80,6 +80,26 @@ const Cart: React.FC = () => {
                                 </button>
                             </div>
                         ))}
+
+                        {/* Botones debajo de la lista de productos */}
+                        <div className="flex justify-between mt-4">
+                            <Link
+                                to="/productos"
+                                className="bg-white border border-[#6F6134] text-[#6F6134] px-6 py-2 rounded-lg hover:bg-[#6F6134] hover:text-white transition-colors"
+                            >
+                                Seguir Comprando
+                            </Link>
+                            <button
+                                className="bg-white border border-red-500 text-red-500 px-6 py-2 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
+                                onClick={() => {
+                                    if (window.confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
+                                        clearCart(); // Vacía el carrito
+                                    }
+                                }}
+                            >
+                                Vaciar Carrito
+                            </button>
+                        </div>
                     </div>
 
                     {/* Resumen del pedido */}
