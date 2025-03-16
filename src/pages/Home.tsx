@@ -94,9 +94,12 @@ const Home: React.FC = () => {
                             Nuestra misión es transformar tu rutina de belleza con ingredientes naturales de la más alta calidad, respetuosos con tu piel y con el medio ambiente. No creemos en soluciones temporales, sino en un compromiso a largo plazo con la autenticidad, la sostenibilidad y el bienestar.
                         </p>
                         <div className="flex justify-center gap-4">
-                            <button className="bg-[#6F6134] text-white px-8 py-3 rounded-lg hover:bg-[#5A4D2B] transition-colors transform hover:scale-105">
+                            <Link
+                                to="/productos" // Ruta a la página de productos
+                                className="bg-[#6F6134] text-white px-8 py-3 rounded-lg hover:bg-[#5A4D2B] transition-colors transform hover:scale-105"
+                            >
                                 Descubre más
-                            </button>
+                            </Link>
                             {isLoggedIn && (
                                 <Link
                                     to="/cart"
