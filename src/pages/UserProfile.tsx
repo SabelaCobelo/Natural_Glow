@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext"; // Importar el contexto del carrito
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -24,6 +25,7 @@ interface SavedProduct {
 
 const UserProfile: React.FC = () => {
     const { isLoggedIn, user } = useAuth(); // Obtén el estado de autenticación y los datos del usuario
+    const { addToCart } = useCart(); // Obtén la función para añadir productos al carrito
     const navigate = useNavigate();
     const [orders, setOrders] = useState<Order[]>([]); // Estado para almacenar los pedidos
     const [savedProducts, setSavedProducts] = useState<SavedProduct[]>([]); // Estado para productos guardados
@@ -141,6 +143,26 @@ const UserProfile: React.FC = () => {
                                             strokeLinejoin="round"
                                             strokeWidth={2}
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                        />
+                                    </svg>
+                                </button>
+                                {/* Botón para añadir al carrito */}
+                                <button
+                                    className="absolute top-2 left-2 text-green-500 hover:text-green-700 transition-colors"
+                                    onClick={() => addToCart(product)} // Añadir al carrito
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-6 w-6"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                                         />
                                     </svg>
                                 </button>

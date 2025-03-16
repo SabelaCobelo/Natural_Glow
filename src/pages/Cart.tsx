@@ -7,11 +7,20 @@ const Cart: React.FC = () => {
     const { isLoggedIn } = useAuth(); // Estado de autenticación desde el contexto
     const { cartItems, removeFromCart, clearCart, increaseQuantity, decreaseQuantity } = useCart(); // Funciones del carrito
 
-    // Calcular el total del carrito con tipos explícitos
-    const total = cartItems.reduce(
-        (sum: number, item) => sum + item.price * item.quantity,
-        0
-    );
+    // Calcular el total del carrito con validación de números
+    const total = cartItems.reduce((sum, item) => {
+        const price = Number(item.price); // Asegurar que el precio sea un número
+        const quantity = Number(item.quantity); // Asegurar que la cantidad sea un número
+        if (isNaN(price)) {
+            console.error(`Precio no válido para el producto: ${item.name}`);
+            return sum;
+        }
+        if (isNaN(quantity)) {
+            console.error(`Cantidad no válida para el producto: ${item.name}`);
+            return sum;
+        }
+        return sum + price * quantity;
+    }, 0);
 
     // Si el carrito está vacío, mostrar un mensaje
     if (cartItems.length === 0) {
@@ -41,45 +50,53 @@ const Cart: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Lista de productos en el carrito */}
                     <div className="md:col-span-2">
-                        {cartItems.map((item) => (
-                            <div
-                                key={item.id}
-                                className="bg-white p-6 rounded-lg shadow-md mb-4 flex items-center"
-                            >
-                                <img
-                                    src={item.image}
-                                    alt={item.name}
-                                    className="w-24 h-24 object-cover rounded-lg mr-6"
-                                />
-                                <div className="flex-1">
-                                    <h2 className="text-xl font-semibold text-[#6F6134]">
-                                        {item.name}
-                                    </h2>
-                                    <p className="text-[#5A4D2B]">Precio: ${item.price.toFixed(2)}</p>
-                                    <div className="flex items-center gap-2">
-                                        <button
-                                            onClick={() => decreaseQuantity(item.id)} // Disminuir cantidad
-                                            className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
-                                        >
-                                            -
-                                        </button>
-                                        <p className="text-[#5A4D2B]">Cantidad: {item.quantity}</p>
-                                        <button
-                                            onClick={() => increaseQuantity(item.id)} // Aumentar cantidad
-                                            className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                </div>
-                                <button
-                                    className="text-red-500 hover:text-red-700 transition-colors"
-                                    onClick={() => removeFromCart(item.id)} // Lógica para eliminar producto
+                        {cartItems.map((item) => {
+                            const quantity = Number(item.quantity); // Asegurar que quantity sea un número
+                            if (isNaN(quantity)) {
+                                console.error(`Cantidad no válida para el producto: ${item.name}`);
+                                return null; // Omitir este producto si la cantidad no es válida
+                            }
+
+                            return (
+                                <div
+                                    key={item.id}
+                                    className="bg-white p-6 rounded-lg shadow-md mb-4 flex items-center"
                                 >
-                                    Eliminar
-                                </button>
-                            </div>
-                        ))}
+                                    <img
+                                        src={item.image}
+                                        alt={item.name}
+                                        className="w-24 h-24 object-cover rounded-lg mr-6"
+                                    />
+                                    <div className="flex-1">
+                                        <h2 className="text-xl font-semibold text-[#6F6134]">
+                                            {item.name}
+                                        </h2>
+                                        <p className="text-[#5A4D2B]">Precio: ${item.price.toFixed(2)}</p>
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={() => decreaseQuantity(item.id)} // Disminuir cantidad
+                                                className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
+                                            >
+                                                -
+                                            </button>
+                                            <p className="text-[#5A4D2B]">Cantidad: {quantity}</p>
+                                            <button
+                                                onClick={() => increaseQuantity(item.id)} // Aumentar cantidad
+                                                className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button
+                                        className="text-red-500 hover:text-red-700 transition-colors"
+                                        onClick={() => removeFromCart(item.id)} // Lógica para eliminar producto
+                                    >
+                                        Eliminar
+                                    </button>
+                                </div>
+                            );
+                        })}
 
                         {/* Botones debajo de la lista de productos */}
                         <div className="flex justify-between mt-4">
