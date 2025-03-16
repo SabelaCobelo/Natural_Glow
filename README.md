@@ -17,7 +17,7 @@
     🔥 Firebase: Autenticación y base de datos en tiempo real.
 
 🗂️ Estructura del proyecto:
-    tienda-cosmetica-natural/
+tienda-cosmetica-natural/
 ├── public/
 │   └── img/                  # Imágenes de los productos
 ├── src/
@@ -92,7 +92,7 @@
         npm run build: Genera una versión optimizada para producción en la carpeta dist.
         npm run preview: Sirve la versión de producción localmente para pruebas.
 
-    🌟 Capturas de pantalla
+🌟 Capturas de pantalla
         ![Página de inicio](public/captures/homecapture.png)
         ![Página de productos](public/captures/productscapture.png)
         ![Página de perfil](public/captures/profilecapture.png)
