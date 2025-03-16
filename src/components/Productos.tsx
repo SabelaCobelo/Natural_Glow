@@ -3,6 +3,8 @@ import { db } from '../../firebase'; // Ajusta la ruta según la ubicación del 
 import { ref, onValue } from 'firebase/database';
 import { useCart } from '../context/CartContext'; // Importa el contexto del carrito
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
+import { toast } from 'react-toastify'; // Importa toast
+import 'react-toastify/dist/ReactToastify.css'; // Importa los estilos de react-toastify
 
 interface Product {
     id: string;
@@ -80,6 +82,7 @@ const Productos: React.FC = () => {
         };
 
         addToCart(cartItem); // Agrega el producto al carrito
+        toast.success(`${cartItem.quantity} ${product.name}(s) se ha(n) añadido al carrito.`); // Muestra una notificación
         navigate("/cart"); // Redirige al usuario a la página del carrito
     };
 

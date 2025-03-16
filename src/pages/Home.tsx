@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { toast } from "react-toastify"; // Importa toast
+import "react-toastify/dist/ReactToastify.css"; // Importa los estilos de react-toastify
 
 const images = [
     "/img/Natural_Glow_Models/model1.jpg",
@@ -56,14 +58,14 @@ const Home: React.FC = () => {
     // Función para manejar la adición al carrito
     const handleAddToCart = (product: Product) => {
         if (!isLoggedIn) {
-            alert("Debes iniciar sesión para añadir productos al carrito.");
+            toast.info("Debes iniciar sesión para añadir productos al carrito.");
             navigate("/login");
             return;
         }
 
         const quantity = quantities[product.id] || 1; // Cantidad predeterminada: 1
         addToCart({ ...product, quantity }); // Añade el producto con la cantidad
-        alert(`${quantity} ${product.name}(s) se ha(n) añadido al carrito.`);
+        toast.success(`${quantity} ${product.name}(s) se ha(n) añadido al carrito.`);
     };
 
     // Función para actualizar la cantidad
