@@ -1,40 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 
-// Define el tipo de datos del producto (ajusta según tu base de datos)
 interface Product {
     id: number;
     name: string;
     description: string;
     price: number;
     image: string;
-    category?: string; // Campo opcional
-    stock?: number; // Campo opcional
-    brand?: string; // Campo opcional
-    ingredients?: string[]; // Campo opcional
-    benefits?: string[]; // Campo opcional
+    category?: string;
+    stock?: number;
+    brand?: string;
+    ingredients?: string[];
+    benefits?: string[];
 }
 
 const ProductDetail: React.FC = () => {
-    const { id } = useParams<{ id: string }>(); // Obtén el ID del producto desde la URL
-    const { isLoggedIn } = useAuth(); // Estado de autenticación desde el contexto
-    const { addToCart } = useCart(); // Función para añadir productos al carrito
-    const navigate = useNavigate(); // Hook para navegación programática
+    const { id } = useParams<{ id: string }>();
+    const { isLoggedIn } = useAuth();
+    const { addToCart } = useCart();
+    const navigate = useNavigate();
 
-    const [product, setProduct] = useState<Product | null>(null); // Estado para almacenar los detalles del producto
-    const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga
-    const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
-    // Obtén los detalles del producto desde la API
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await fetch(`/api/products/${id}`); // Ajusta la URL de la API
-                if (!response.ok) {
-                    throw new Error("Producto no encontrado");
-                }
+                const response = await fetch(`/api/products/${id}`);
+                if (!response.ok) throw new Error("Producto no encontrado");
                 const data: Product = await response.json();
                 setProduct(data);
             } catch (err) {
@@ -47,7 +43,6 @@ const ProductDetail: React.FC = () => {
         fetchProduct();
     }, [id]);
 
-    // Función para manejar la adición al carrito
     const handleAddToCart = () => {
         if (!product) return;
 
@@ -55,81 +50,35 @@ const ProductDetail: React.FC = () => {
             id: product.id,
             name: product.name,
             price: product.price,
-            quantity: 1, // Cantidad inicial
+            quantity: 1,
             image: product.image,
         };
 
-        addToCart(cartItem); // Añade el producto al carrito
-        alert(`${product.name} ha sido añadido al carrito.`); // Mensaje de confirmación
+        addToCart(cartItem);
+        alert(`${product.name} ha sido añadido al carrito.`);
     };
 
-    // Muestra un mensaje de carga mientras se obtienen los datos
-    if (loading) {
-        return <div className="text-center py-8">Cargando...</div>;
-    }
-
-    // Muestra un mensaje de error si algo falla
-    if (error) {
-        return <div className="text-center py-8 text-red-500">{error}</div>;
-    }
-
-    // Si no hay producto, muestra un mensaje
-    if (!product) {
-        return <div className="text-center py-8">Producto no encontrado</div>;
-    }
+    if (loading) return <div className="text-center py-8">Cargando...</div>;
+    if (error) return <div className="text-center py-8 text-red-500">{error}</div>;
+    if (!product) return <div className="text-center py-8">Producto no encontrado</div>;
 
     return (
         <div className="container mx-auto px-4 py-16">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                {/* Imagen del producto */}
                 <div className="w-full">
-                    <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-auto rounded-lg shadow-lg"
-                    />
+                    <img src={product.image} alt={product.name} className="w-full h-auto rounded-lg shadow-lg" />
                 </div>
-
-                {/* Detalles del producto */}
                 <div className="space-y-6">
                     <h1 className="text-4xl font-bold text-[#6F6134]">{product.name}</h1>
                     <p className="text-lg text-[#5A4D2B]">{product.description}</p>
-                    <p className="text-2xl font-bold text-[#6F6134]">
-                        {product.price.toFixed(2)} € {/* Precio con símbolo del euro */}
-                    </p>
-
-                    {/* Campos adicionales del producto */}
+                    <p className="text-2xl font-bold text-[#6F6134]">{product.price.toFixed(2)} €</p>
                     <div className="space-y-2">
-                        {product.category && (
-                            <p>
-                                <span className="font-semibold">Categoría:</span> {product.category}
-                            </p>
-                        )}
-                        {product.stock && (
-                            <p>
-                                <span className="font-semibold">Stock:</span> {product.stock}
-                            </p>
-                        )}
-                        {product.brand && (
-                            <p>
-                                <span className="font-semibold">Marca:</span> {product.brand}
-                            </p>
-                        )}
-                        {product.ingredients && (
-                            <p>
-                                <span className="font-semibold">Ingredientes:</span>{" "}
-                                {product.ingredients.join(", ")}
-                            </p>
-                        )}
-                        {product.benefits && (
-                            <p>
-                                <span className="font-semibold">Beneficios:</span>{" "}
-                                {product.benefits.join(", ")}
-                            </p>
-                        )}
+                        {product.category && <p><span className="font-semibold">Categoría:</span> {product.category}</p>}
+                        {product.stock && <p><span className="font-semibold">Stock:</span> {product.stock}</p>}
+                        {product.brand && <p><span className="font-semibold">Marca:</span> {product.brand}</p>}
+                        {product.ingredients && <p><span className="font-semibold">Ingredientes:</span> {product.ingredients.join(", ")}</p>}
+                        {product.benefits && <p><span className="font-semibold">Beneficios:</span> {product.benefits.join(", ")}</p>}
                     </div>
-
-                    {/* Mostrar opción de iniciar sesión o añadir al carrito */}
                     {isLoggedIn ? (
                         <button
                             className="bg-[#6F6134] text-white px-8 py-3 rounded-lg hover:bg-[#5A4D2B] transition-colors"
@@ -140,7 +89,7 @@ const ProductDetail: React.FC = () => {
                     ) : (
                         <button
                             className="bg-[#E1C68F] text-[#6F6134] px-8 py-3 rounded-lg hover:bg-[#D4B57D] transition-colors"
-                            onClick={() => navigate("/login")} // Redirige a la página de inicio de sesión
+                            onClick={() => navigate("/login")}
                         >
                             Iniciar Sesión para Comprar
                         </button>

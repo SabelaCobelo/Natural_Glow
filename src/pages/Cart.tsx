@@ -5,30 +5,39 @@ import { Link } from "react-router-dom";
 
 const Cart: React.FC = () => {
     const { isLoggedIn } = useAuth(); // Estado de autenticación desde el contexto
-    const { cartItems, removeFromCart, clearCart } = useCart(); // Funciones del carrito
+    const { cartItems, removeFromCart, clearCart, increaseQuantity, decreaseQuantity } = useCart(); // Funciones del carrito
 
-    // Calcular el total del carrito
+    // Calcular el total del carrito con tipos explícitos
     const total = cartItems.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+        (sum: number, item) => sum + item.price * item.quantity,
         0
     );
 
-    return (
-        <div className="container mx-auto px-4 py-16">
-            <h1 className="text-3xl font-bold text-[#6F6134] mb-8">Carrito de Compras</h1>
-
-            {/* Mostrar mensaje si el carrito está vacío */}
-            {cartItems.length === 0 ? (
-                <div className="text-center">
-                    <p className="text-[#5A4D2B] text-lg">Tu carrito está vacío.</p>
-                    <Link
-                        to="/productos"
-                        className="mt-4 inline-block bg-[#6F6134] text-white px-6 py-2 rounded-lg hover:bg-[#5A4D2B] transition-colors"
-                    >
-                        Explorar Productos
-                    </Link>
+    // Si el carrito está vacío, mostrar un mensaje
+    if (cartItems.length === 0) {
+        return (
+            <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold text-[#6F6134] mb-8">Carrito de Compras</h1>
+                    <div className="text-center">
+                        <p className="text-[#5A4D2B] text-lg">Tu carrito está vacío.</p>
+                        <Link
+                            to="/productos"
+                            className="mt-4 inline-block bg-[#6F6134] text-white px-6 py-2 rounded-lg hover:bg-[#5A4D2B] transition-colors"
+                        >
+                            Explorar Productos
+                        </Link>
+                    </div>
                 </div>
-            ) : (
+            </div>
+        );
+    }
+
+    return (
+        <div className="container mx-auto px-4 py-16 min-h-screen flex flex-col justify-between">
+            <div>
+                <h1 className="text-3xl font-bold text-[#6F6134] mb-8">Carrito de Compras</h1>
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Lista de productos en el carrito */}
                     <div className="md:col-span-2">
@@ -47,7 +56,21 @@ const Cart: React.FC = () => {
                                         {item.name}
                                     </h2>
                                     <p className="text-[#5A4D2B]">Precio: ${item.price.toFixed(2)}</p>
-                                    <p className="text-[#5A4D2B]">Cantidad: {item.quantity}</p>
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={() => decreaseQuantity(item.id)} // Disminuir cantidad
+                                            className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
+                                        >
+                                            -
+                                        </button>
+                                        <p className="text-[#5A4D2B]">Cantidad: {item.quantity}</p>
+                                        <button
+                                            onClick={() => increaseQuantity(item.id)} // Aumentar cantidad
+                                            className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
                                 </div>
                                 <button
                                     className="text-red-500 hover:text-red-700 transition-colors"
@@ -89,7 +112,7 @@ const Cart: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 };

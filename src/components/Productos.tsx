@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase'; // Ajusta la ruta según la ubicación del archivo
 import { ref, onValue } from 'firebase/database';
+import { useCart } from '../context/CartContext'; // Importa el contexto del carrito
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
 
 interface Product {
     id: string;
@@ -23,6 +25,9 @@ const Productos: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const { addToCart } = useCart(); // Obtén la función addToCart del contexto del carrito
+    const navigate = useNavigate(); // Hook para redirigir al usuario
 
     // Obtener los productos desde Realtime Database
     useEffect(() => {
@@ -62,6 +67,20 @@ const Productos: React.FC = () => {
             ...prev,
             [productId]: !prev[productId],
         }));
+    };
+
+    // Función para manejar la compra
+    const handleBuy = (product: Product) => {
+        const cartItem = {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            quantity: quantities[product.id] || 1, // Usa la cantidad seleccionada
+            image: product.image,
+        };
+
+        addToCart(cartItem); // Agrega el producto al carrito
+        navigate("/cart"); // Redirige al usuario a la página del carrito
     };
 
     // Filtrar productos por término de búsqueda, categoría y rango de precios
@@ -229,7 +248,10 @@ const Productos: React.FC = () => {
                                 {favorites[product.id] ? "❤️" : "♡"}
                             </button>
                         </div>
-                        <button className="w-full bg-[#6F6134] text-white py-2 rounded-md hover:bg-[#5A4D2B] transition-colors transform hover:-translate-y-1 transition-transform">
+                        <button
+                            className="w-full bg-[#6F6134] text-white py-2 rounded-md hover:bg-[#5A4D2B] transition-colors transform hover:-translate-y-1 transition-transform"
+                            onClick={() => handleBuy(product)} // Llama a handleBuy al hacer clic
+                        >
                             Comprar
                         </button>
                         <div className="flex justify-end space-x-2 mt-2">
