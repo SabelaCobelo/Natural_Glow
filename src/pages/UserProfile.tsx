@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ref, onValue, remove } from "firebase/database";
 import { db } from "../../firebase";
+import { FaTrash, FaCartPlus } from "react-icons/fa"; // Iconos para eliminar y agregar al carrito
 
 interface Product {
     id: string;
@@ -38,26 +39,7 @@ const UserProfile: React.FC = () => {
     const navigate = useNavigate();
     const [orders, setOrders] = useState<Order[]>([]);
     const [savedProducts, setSavedProducts] = useState<SavedProduct[]>([]);
-    const [products, setProducts] = useState<Product[]>([]); // Estado para los productos
     const [isLoading, setIsLoading] = useState(true);
-
-    // Obtener productos desde Firebase (independientemente de la autenticación)
-    useEffect(() => {
-        const productsRef = ref(db, "Producto");
-        onValue(productsRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                const productsData = Object.keys(data).map((key) => ({
-                    id: key,
-                    ...data[key],
-                })) as Product[];
-                setProducts(productsData);
-            } else {
-                console.log("No se encontraron productos.");
-            }
-            setIsLoading(false);
-        });
-    }, []);
 
     // Obtener los productos guardados del usuario desde Firebase (solo si está autenticado)
     useEffect(() => {
@@ -74,6 +56,7 @@ const UserProfile: React.FC = () => {
                 } else {
                     setSavedProducts([]);
                 }
+                setIsLoading(false);
             });
         }
     }, [user]);
@@ -95,6 +78,32 @@ const UserProfile: React.FC = () => {
             setOrders(mockOrders);
         }
     }, [user]);
+
+    // Función para eliminar un producto de favoritos
+    const handleRemoveFromFavorites = async (productId: string) => {
+        if (user) {
+            try {
+                const productRef = ref(db, `users/${user.uid}/savedProducts/${productId}`);
+                await remove(productRef);
+                toast.success("Producto eliminado de favoritos.");
+            } catch (error) {
+                console.error("Error al eliminar el producto de favoritos:", error);
+                toast.error("Error al eliminar el producto de favoritos.");
+            }
+        }
+    };
+
+    // Función para mover un producto al carrito
+    const handleAddToCart = (product: SavedProduct) => {
+        addToCart({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: 1, // Cantidad por defecto
+        });
+        toast.success("Producto agregado al carrito.");
+    };
 
     // Función para manejar el logout
     const handleLogout = async () => {
@@ -141,31 +150,12 @@ const UserProfile: React.FC = () => {
                 </div>
             )}
 
-            {/* Sección de Productos (mostrar a todos los usuarios) */}
-            <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h2 className="text-2xl font-semibold text-[#6F6134] mb-4">Nuestros Productos</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {products.map((product) => (
-                        <div key={product.id} className="bg-[#F4E9D6] p-4 rounded-lg shadow-md">
-                            <img
-                                src={product.image}
-                                alt={product.name}
-                                className="w-full h-32 object-cover rounded-lg mb-4"
-                            />
-                            <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
-                            <p className="text-[#5A4D2B]">{product.description}</p>
-                            <p className="text-[#6F6134] font-bold mb-4">${product.price.toFixed(2)}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Sección de Productos Guardados (solo si está autenticado) */}
+            {/* Sección de Mis Favoritos (solo si está autenticado) */}
             {isLoggedIn && (
                 <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-                    <h2 className="text-2xl font-semibold text-[#6F6134] mb-4">Productos Guardados</h2>
+                    <h2 className="text-2xl font-semibold text-[#6F6134] mb-4">Mis Favoritos</h2>
                     {savedProducts.length === 0 ? (
-                        <p className="text-[#5A4D2B]">No tienes productos guardados.</p>
+                        <p className="text-[#5A4D2B]">No tienes productos favoritos.</p>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {savedProducts.map((product) => (
@@ -178,6 +168,23 @@ const UserProfile: React.FC = () => {
                                     <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
                                     <p className="text-[#5A4D2B]">{product.description}</p>
                                     <p className="text-[#6F6134] font-bold mb-4">${product.price.toFixed(2)}</p>
+                                    {/* Botones para eliminar de favoritos y agregar al carrito */}
+                                    <div className="flex justify-between">
+                                        <button
+                                            onClick={() => handleRemoveFromFavorites(product.id)}
+                                            className="text-red-500 hover:text-red-700 transition-colors"
+                                            title="Eliminar de favoritos"
+                                        >
+                                            <FaTrash size={20} />
+                                        </button>
+                                        <button
+                                            onClick={() => handleAddToCart(product)}
+                                            className="text-green-500 hover:text-green-700 transition-colors"
+                                            title="Agregar al carrito"
+                                        >
+                                            <FaCartPlus size={20} />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>
