@@ -47,7 +47,7 @@ const Contact: React.FC = () => {
                     transition={{ duration: 0.8 }}
                     className="text-5xl font-bold text-center text-[#6F6134] mb-12"
                 >
-                    Contáctanos
+                    Contácta con Nosotros
                 </motion.h1>
 
                 {/* Información de contacto y formulario */}
