@@ -2,6 +2,7 @@ import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext"; // Contexto del carrito
 import { Link } from "react-router-dom";
+import { FaTrash } from "react-icons/fa"; // Ícono de eliminar
 
 const Cart: React.FC = () => {
     const { isLoggedIn } = useAuth(); // Estado de autenticación desde el contexto
@@ -107,14 +108,14 @@ const Cart: React.FC = () => {
                                 Seguir Comprando
                             </Link>
                             <button
-                                className="bg-white border border-red-500 text-red-500 px-6 py-2 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
+                                className="text-red-500 hover:text-red-700 transition-colors flex items-center gap-2"
                                 onClick={() => {
                                     if (window.confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
                                         clearCart(); // Vacía el carrito
                                     }
                                 }}
                             >
-                                Vaciar Carrito
+                                <FaTrash className="w-5 h-5" /> {/* Ícono de eliminar */}
                             </button>
                         </div>
                     </div>
