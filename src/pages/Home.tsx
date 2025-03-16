@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { toast } from "react-toastify"; // Importa toast
 import "react-toastify/dist/ReactToastify.css"; // Importa los estilos de react-toastify
+import { ref, onValue } from "firebase/database"; // Importa funciones de Firebase
+import { db } from "../../firebase"; // Importa la configuración de Firebase
 
 const images = [
     "/img/Natural_Glow_Models/model1.jpg",
@@ -15,7 +17,7 @@ const images = [
 ];
 
 interface Product {
-    id: number;
+    id: string; // Cambia a string porque Firebase usa IDs de tipo string
     name: string;
     description: string;
     price: number;
@@ -26,37 +28,28 @@ const Home: React.FC = () => {
     const { isLoggedIn } = useAuth();
     const { addToCart } = useCart();
     const navigate = useNavigate();
+    const [products, setProducts] = useState<Product[]>([]); // Estado para almacenar los productos
+    const [quantities, setQuantities] = useState<{ [key: string]: number }>({}); // Estado para las cantidades
+    const [favorites, setFavorites] = useState<{ [key: string]: boolean }>({}); // Estado para los favoritos
 
-    // Lista de productos destacados
-    const featuredProducts: Product[] = [
-        {
-            id: 1,
-            name: "Crema Facial Hidratante",
-            description: "Hidratante natural con aloe vera y aceite de jojoba.",
-            image: "/img/productshome/cream.jpg",
-            price: 25.99,
-        },
-        {
-            id: 2,
-            name: "Shampoo Natural",
-            description: "Fortalece y nutre tu cabello con ingredientes orgánicos.",
-            image: "/img/productshome/shampoo.jpg",
-            price: 18.99,
-        },
-        {
-            id: 3,
-            name: "Aceite Corporal",
-            description: "Hidratación profunda con aceite de coco y almendras.",
-            image: "/img/productshome/oil.jpg",
-            price: 22.99,
-        },
-    ];
+    // Obtener los productos desde Firebase Realtime Database
+    useEffect(() => {
+        const productsRef = ref(db, "Producto"); // Ajusta la ruta según tu base de datos
 
-    // Estado para la cantidad de cada producto
-    const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
-
-    // Estado para los favoritos
-    const [favorites, setFavorites] = useState<{ [key: number]: boolean }>({});
+        onValue(productsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const productsData = Object.keys(data)
+                    .map((key) => ({
+                        id: key,
+                        ...data[key],
+                    })) as Product[];
+                // Limitar a 6 productos destacados
+                const featuredProducts = productsData.slice(0, 6);
+                setProducts(featuredProducts);
+            }
+        });
+    }, []);
 
     // Función para manejar la adición al carrito
     const handleAddToCart = (product: Product) => {
@@ -67,17 +60,17 @@ const Home: React.FC = () => {
         }
 
         const quantity = quantities[product.id] || 1; // Cantidad predeterminada: 1
-        addToCart({ ...product, id: product.id.toString(), quantity }); // Añade el producto con la cantidad
+        addToCart({ ...product, quantity }); // Añade el producto con la cantidad
         toast.success(`${quantity} ${product.name}(s) se ha(n) añadido al carrito.`);
     };
 
     // Función para actualizar la cantidad
-    const handleQuantityChange = (productId: number, quantity: number) => {
+    const handleQuantityChange = (productId: string, quantity: number) => {
         setQuantities((prev) => ({ ...prev, [productId]: quantity }));
     };
 
     // Función para alternar favoritos
-    const toggleFavorite = (productId: number) => {
+    const toggleFavorite = (productId: string) => {
         setFavorites((prev) => ({
             ...prev,
             [productId]: !prev[productId],
@@ -92,7 +85,7 @@ const Home: React.FC = () => {
                     {/* Izquierda: Texto de presentación */}
                     <div className="space-y-6 text-center">
                         <h1 className="text-5xl font-bold text-[#6F6134]">
-                            Natural Glow
+                            La Cosmética Natural que merece tu piel
                         </h1>
                         <p className="text-lg text-[#5A4D2B] leading-relaxed">
                             En <span className="font-semibold">Natural Glow</span>, creemos que la belleza comienza desde adentro y se refleja en el cuidado que damos a nuestro cuerpo y al planeta. Somos una marca comprometida con ofrecer productos de cosmética natural, ecológica y cruelty-free que cuidan tu piel y el entorno que nos rodea.
@@ -125,10 +118,10 @@ const Home: React.FC = () => {
             {/* Sección de productos destacados */}
             <div className="container mx-auto px-4 py-16">
                 <h2 className="text-3xl font-bold text-[#6F6134] text-center mb-8">
-                    Productos Destacados
+                    Descubre nuestros productos destacados
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {featuredProducts.map((product) => (
+                    {products.map((product) => (
                         <div key={product.id} className="bg-white p-6 rounded-lg shadow-md text-center transform transition duration-500 hover:scale-105">
                             <img
                                 src={product.image}
@@ -138,7 +131,7 @@ const Home: React.FC = () => {
                             <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
                             <p className="text-[#5A4D2B] mt-2">{product.description}</p>
                             <p className="text-[#6F6134] font-bold mt-2">
-                                {product.price.toFixed(2)} €
+                                ${product.price.toFixed(2)} {/* Cambio aquí: símbolo del dólar */}
                             </p>
 
                             {/* Selector de cantidad y botón de favoritos alineados */}
@@ -176,7 +169,6 @@ const Home: React.FC = () => {
                             >
                                 Añadir al Carrito
                             </button>
-
                         </div>
                     ))}
                 </div>
