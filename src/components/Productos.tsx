@@ -28,6 +28,7 @@ const Productos: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [refreshKey, setRefreshKey] = useState(0); // Estado adicional para forzar re-renderizado
 
     const { addToCart } = useCart(); // Obtén la función addToCart del contexto del carrito
     const { user, isLoggedIn } = useAuth(); // Obtén el usuario y el estado de autenticación
@@ -55,6 +56,8 @@ const Productos: React.FC = () => {
                 setError('No se encontraron productos.');
             }
             setLoading(false);
+            // Forzar re-renderizado actualizando el estado refreshKey
+            setRefreshKey((prev) => prev + 1);
         }, (err) => {
             console.error("Error al cargar productos:", err); // Verifica si hay errores
             setError('Error cargando productos');
@@ -77,6 +80,8 @@ const Productos: React.FC = () => {
                 } else {
                     setFavorites({}); // Si no hay favoritos, establecer un objeto vacío
                 }
+                // Forzar re-renderizado actualizando el estado refreshKey
+                setRefreshKey((prev) => prev + 1);
             });
         }
     }, [user]);
@@ -110,6 +115,9 @@ const Productos: React.FC = () => {
             ...prev,
             [product.id]: !prev[product.id],
         }));
+
+        // Forzar re-renderizado
+        setRefreshKey((prev) => prev + 1);
     };
 
     // Función para manejar la compra
@@ -169,7 +177,7 @@ const Productos: React.FC = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div key={refreshKey} className="container mx-auto px-4 py-8">
             <h2 className="text-3xl font-bold text-center text-[#6F6134] mb-8">Nuestra línea de productos orgánicos</h2>
 
             {/* Filtros con diseño mejorado */}
@@ -286,8 +294,8 @@ const Productos: React.FC = () => {
                                 </button>
                             </div>
                             <button
-                                onClick={() => toggleFavorite(product)} // Pasar el producto completo
-                                className={`text-2xl ${favorites[product.id] ? "text-red-500 animate-bounce" : "text-gray-400"} hover:text-red-500 transition-colors`}
+                                onClick={() => toggleFavorite(product)}
+                                className={`text-2xl ${favorites[product.id] ? "text-red-500" : "text-gray-400"} hover:text-red-500 transition-colors`}
                             >
                                 {favorites[product.id] ? "❤️" : "♡"}
                             </button>

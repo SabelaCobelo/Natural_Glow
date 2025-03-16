@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import { toast } from "react-toastify"; // Importa toast
-import "react-toastify/dist/ReactToastify.css"; // Importa los estilos de react-toastify
-import { ref, onValue, set, remove } from "firebase/database"; // Importa funciones de Firebase
-import { db } from "../../firebase"; // Importa la configuración de Firebase
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ref, onValue, set, remove } from "firebase/database";
+import { db } from "../../firebase";
 
 const images = [
     "/img/Natural_Glow_Models/model1.jpg",
@@ -17,7 +17,7 @@ const images = [
 ];
 
 interface Product {
-    id: string; // Cambia a string porque Firebase usa IDs de tipo string
+    id: string;
     name: string;
     description: string;
     price: number;
@@ -28,30 +28,29 @@ const Home: React.FC = () => {
     const { isLoggedIn, user } = useAuth();
     const { addToCart } = useCart();
     const navigate = useNavigate();
-    const [products, setProducts] = useState<Product[]>([]); // Estado para almacenar los productos
-    const [quantities, setQuantities] = useState<{ [key: string]: number }>({}); // Estado para las cantidades
-    const [favorites, setFavorites] = useState<{ [key: string]: boolean }>({}); // Estado para los favoritos
+    const [products, setProducts] = useState<Product[]>([]);
+    const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+    const [favorites, setFavorites] = useState<{ [key: string]: boolean }>({});
+    const [refreshKey, setRefreshKey] = useState(0); // Estado adicional para forzar re-renderizado
 
-    // Obtener los productos desde Firebase Realtime Database
+    // Obtener productos desde Firebase
     useEffect(() => {
-        const productsRef = ref(db, "Producto"); // Ajusta la ruta según tu base de datos
+        const productsRef = ref(db, "Producto");
 
         onValue(productsRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                const productsData = Object.keys(data)
-                    .map((key) => ({
-                        id: key,
-                        ...data[key],
-                    })) as Product[];
-                // Limitar a 6 productos destacados
+                const productsData = Object.keys(data).map((key) => ({
+                    id: key,
+                    ...data[key],
+                })) as Product[];
                 const featuredProducts = productsData.slice(0, 6);
                 setProducts(featuredProducts);
             }
         });
     }, []);
 
-    // Obtener los favoritos del usuario desde Firebase
+    // Obtener favoritos desde Firebase
     useEffect(() => {
         if (user) {
             const favoritesRef = ref(db, `users/${user.uid}/savedProducts`);
@@ -66,6 +65,8 @@ const Home: React.FC = () => {
                 } else {
                     setFavorites({}); // Si no hay favoritos, establecer un objeto vacío
                 }
+                // Forzar re-renderizado actualizando el estado refreshKey
+                setRefreshKey((prev) => prev + 1);
             });
         }
     }, [user]);
@@ -78,8 +79,8 @@ const Home: React.FC = () => {
             return;
         }
 
-        const quantity = quantities[product.id] || 1; // Cantidad predeterminada: 1
-        addToCart({ ...product, quantity }); // Añade el producto con la cantidad
+        const quantity = quantities[product.id] || 1;
+        addToCart({ ...product, quantity });
         toast.success(`${quantity} ${product.name}(s) se ha(n) añadido al carrito.`);
     };
 
@@ -113,10 +114,13 @@ const Home: React.FC = () => {
             ...prev,
             [product.id]: !prev[product.id],
         }));
+
+        // Forzar re-renderizado
+        setRefreshKey((prev) => prev + 1);
     };
 
     return (
-        <div className="bg-gradient-to-b from-[#F9F5F0] to-white">
+        <div key={refreshKey} className="bg-gradient-to-b from-[#F9F5F0] to-white">
             {/* Sección principal */}
             <div className="container mx-auto px-4 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -133,7 +137,7 @@ const Home: React.FC = () => {
                         </p>
                         <div className="flex justify-center gap-4">
                             <Link
-                                to="/productos" // Ruta a la página de productos
+                                to="/productos"
                                 className="bg-[#6F6134] text-white px-8 py-3 rounded-lg hover:bg-[#5A4D2B] transition-colors transform hover:scale-105"
                             >
                                 Descubre más
@@ -172,7 +176,7 @@ const Home: React.FC = () => {
                             <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
                             <p className="text-[#5A4D2B] mt-2">{product.description}</p>
                             <p className="text-[#6F6134] font-bold mt-2">
-                                ${product.price.toFixed(2)} {/* Cambio aquí: símbolo del dólar */}
+                                ${product.price.toFixed(2)}
                             </p>
 
                             {/* Selector de cantidad y botón de favoritos alineados */}
@@ -197,7 +201,7 @@ const Home: React.FC = () => {
                                 {/* Botón de favoritos */}
                                 <button
                                     onClick={() => toggleFavorite(product)}
-                                    className={`text-2xl ${favorites[product.id] ? "text-red-500 animate-bounce" : "text-gray-400"} hover:text-red-500 transition-colors`}
+                                    className={`text-2xl ${favorites[product.id] ? "text-red-500" : "text-gray-400"} hover:text-red-500 transition-colors`}
                                 >
                                     {favorites[product.id] ? "❤️" : "♡"}
                                 </button>
