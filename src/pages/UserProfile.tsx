@@ -11,10 +11,18 @@ interface Order {
     items: { name: string; quantity: number; price: number }[];
 }
 
+interface SavedProduct {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+}
+
 const UserProfile: React.FC = () => {
     const { isLoggedIn, user } = useAuth(); // Obtén el estado de autenticación y los datos del usuario
     const navigate = useNavigate();
     const [orders, setOrders] = useState<Order[]>([]); // Estado para almacenar los pedidos
+    const [savedProducts, setSavedProducts] = useState<SavedProduct[]>([]); // Estado para productos guardados
 
     // Simulación de datos de pedidos (deberías obtenerlos de tu backend)
     const fetchOrders = async () => {
@@ -42,12 +50,39 @@ const UserProfile: React.FC = () => {
         setOrders(mockOrders);
     };
 
+    // Simulación de datos de productos guardados (deberías obtenerlos de tu backend)
+    const fetchSavedProducts = async () => {
+        // Aquí harías una llamada a tu API para obtener los productos guardados del usuario
+        const mockSavedProducts: SavedProduct[] = [
+            {
+                id: "1",
+                name: "Crema Facial Hidratante",
+                price: 25.99,
+                image: "/img/productshome/cream.jpg",
+            },
+            {
+                id: "2",
+                name: "Shampoo Natural",
+                price: 18.99,
+                image: "/img/productshome/shampoo.jpg",
+            },
+            {
+                id: "3",
+                name: "Aceite Corporal",
+                price: 22.99,
+                image: "/img/productshome/oil.jpg",
+            },
+        ];
+        setSavedProducts(mockSavedProducts);
+    };
+
     useEffect(() => {
         if (!isLoggedIn) {
             toast.info("Debes iniciar sesión para acceder a esta página.");
             navigate("/login");
         } else {
             fetchOrders(); // Obtén los pedidos del usuario
+            fetchSavedProducts(); // Obtén los productos guardados del usuario
         }
     }, [isLoggedIn, navigate]);
 
@@ -64,6 +99,28 @@ const UserProfile: React.FC = () => {
                 <p className="text-[#5A4D2B]">
                     <strong>Email:</strong> {user?.email || "usuario@example.com"}
                 </p>
+            </div>
+
+            {/* Sección de Productos Guardados */}
+            <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h2 className="text-2xl font-semibold text-[#6F6134] mb-4">Productos Guardados</h2>
+                {savedProducts.length === 0 ? (
+                    <p className="text-[#5A4D2B]">No tienes productos guardados.</p>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {savedProducts.map((product) => (
+                            <div key={product.id} className="bg-[#F4E9D6] p-4 rounded-lg shadow-md">
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    className="w-full h-32 object-cover rounded-lg mb-4"
+                                />
+                                <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
+                                <p className="text-[#5A4D2B]">Precio: ${product.price.toFixed(2)}</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* Sección de Pedidos Recientes */}
