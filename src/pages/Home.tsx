@@ -55,6 +55,9 @@ const Home: React.FC = () => {
     // Estado para la cantidad de cada producto
     const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
 
+    // Estado para los favoritos
+    const [favorites, setFavorites] = useState<{ [key: number]: boolean }>({});
+
     // Función para manejar la adición al carrito
     const handleAddToCart = (product: Product) => {
         if (!isLoggedIn) {
@@ -64,13 +67,21 @@ const Home: React.FC = () => {
         }
 
         const quantity = quantities[product.id] || 1; // Cantidad predeterminada: 1
-        addToCart({ ...product, id: product.id.toString(), quantity });// Añade el producto con la cantidad
+        addToCart({ ...product, id: product.id.toString(), quantity }); // Añade el producto con la cantidad
         toast.success(`${quantity} ${product.name}(s) se ha(n) añadido al carrito.`);
     };
 
     // Función para actualizar la cantidad
     const handleQuantityChange = (productId: number, quantity: number) => {
         setQuantities((prev) => ({ ...prev, [productId]: quantity }));
+    };
+
+    // Función para alternar favoritos
+    const toggleFavorite = (productId: number) => {
+        setFavorites((prev) => ({
+            ...prev,
+            [productId]: !prev[productId],
+        }));
     };
 
     return (
@@ -127,33 +138,45 @@ const Home: React.FC = () => {
                             <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
                             <p className="text-[#5A4D2B] mt-2">{product.description}</p>
                             <p className="text-[#6F6134] font-bold mt-2">
-                                {product.price.toFixed(2)} € {/* Cambio aquí: símbolo del euro */}
+                                {product.price.toFixed(2)} €
                             </p>
 
-                            {/* Selector de cantidad (igual al de la página de Productos) */}
-                            <div className="flex items-center justify-center gap-2 mb-4">
+                            {/* Selector de cantidad y botón de favoritos alineados */}
+                            <div className="flex items-center justify-between mb-4">
+                                {/* Selector de cantidad */}
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => handleQuantityChange(product.id, Math.max(1, (quantities[product.id] || 1) - 1))}
+                                        className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
+                                    >
+                                        -
+                                    </button>
+                                    <span className="text-lg text-[#6F6134]">{quantities[product.id] || 1}</span>
+                                    <button
+                                        onClick={() => handleQuantityChange(product.id, (quantities[product.id] || 1) + 1)}
+                                        className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+
+                                {/* Botón de favoritos */}
                                 <button
-                                    onClick={() => handleQuantityChange(product.id, Math.max(1, (quantities[product.id] || 1) - 1))}
-                                    className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
+                                    onClick={() => toggleFavorite(product.id)}
+                                    className={`text-2xl ${favorites[product.id] ? "text-red-500 animate-bounce" : "text-gray-400"} hover:text-red-500 transition-colors`}
                                 >
-                                    -
-                                </button>
-                                <span className="text-lg text-[#6F6134]">{quantities[product.id] || 1}</span>
-                                <button
-                                    onClick={() => handleQuantityChange(product.id, (quantities[product.id] || 1) + 1)}
-                                    className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
-                                >
-                                    +
+                                    {favorites[product.id] ? "❤️" : "♡"}
                                 </button>
                             </div>
 
-                            {/* Botón para añadir al carrito */}
+                            {/* Botón "Añadir al carrito" debajo */}
                             <button
                                 onClick={() => handleAddToCart(product)}
-                                className="bg-[#6F6134] text-white px-6 py-2 rounded-lg mt-4 hover:bg-[#5A4D2B] transition-colors"
+                                className="w-full bg-[#6F6134] text-white px-6 py-2 rounded-lg mt-4 hover:bg-[#5A4D2B] transition-colors"
                             >
                                 Añadir al Carrito
                             </button>
+
                         </div>
                     ))}
                 </div>
