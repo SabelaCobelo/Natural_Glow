@@ -36,7 +36,7 @@
 └── vite.config.ts            # Configuración de Vite
 
 🚀 Cómo configurar el proyecto
-    Sigue estos pasos para configurar y ejecutar el proyecto en tu máquina local.
+    Sigue estos pasos para configurar y ejecutar el proyecto en tu máquina local:
 
     📋 Requisitos previos
     Node.js: Asegúrate de tener Node.js instalado. Puedes descargarlo desde nodejs.org.
@@ -92,7 +92,7 @@
         npm run build: Genera una versión optimizada para producción en la carpeta dist.
         npm run preview: Sirve la versión de producción localmente para pruebas.
 
-    🌟 Capturas de pantalla
+🌟 Capturas de pantalla
         ![Página de inicio](public/captures/homecapture.png)
         ![Página de productos](public/captures/productscapture.png)
         ![Página de perfil](public/captures/profilecapture.png)
