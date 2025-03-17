@@ -92,6 +92,12 @@ const Productos: React.FC = () => {
 
     // Función para manejar favoritos
     const toggleFavorite = async (product: Product) => {
+        if (!user) {
+            toast.info("Debes iniciar sesión para guardar productos en favoritos.");
+            navigate("/login");
+            return;
+        }
+
         if (!isLoggedIn) {
             toast.info("Debes iniciar sesión para guardar productos en favoritos.");
             navigate("/login");

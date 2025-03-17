@@ -96,7 +96,7 @@ const Home: React.FC = () => {
             return;
         }
 
-        const favoriteRef = ref(db, `users/${user.uid}/savedProducts/${product.id}`);
+        const favoriteRef = ref(db, `users/${user?.uid}/savedProducts/${product.id}`);
         if (favorites[product.id]) {
             await remove(favoriteRef);
             toast.success("Producto eliminado de favoritos.");
