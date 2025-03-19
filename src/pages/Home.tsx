@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ref, onValue, set, remove } from "firebase/database";
 import { db } from "../../firebase";
 import { motion } from "framer-motion";
+import { FaStar } from "react-icons/fa"; // Ícono de estrella
 
 const images = [
     "/img/Natural_Glow_Models/model1.jpg",
@@ -23,6 +24,7 @@ interface Product {
     description: string;
     price: number;
     image: string;
+    category: string;
 }
 
 const Home: React.FC = () => {
@@ -110,6 +112,44 @@ const Home: React.FC = () => {
             [product.id]: !prev[product.id],
         }));
         setRefreshKey((prev) => prev + 1);
+    };
+
+    // Reseñas ficticias
+    const reviews = [
+        {
+            id: 1,
+            name: "María G.",
+            comment: "Los productos de Natural Glow han transformado mi piel. ¡Son increíbles!",
+            rating: 5,
+        },
+        {
+            id: 2,
+            name: "Carlos R.",
+            comment: "Me encanta que sean naturales y respetuosos con el medio ambiente.",
+            rating: 4,
+        },
+        {
+            id: 3,
+            name: "Sofía L.",
+            comment: "La mejor decisión que he tomado para mi rutina de belleza.",
+            rating: 5,
+        },
+        {
+            id: 4,
+            name: "Ana M.",
+            comment: "Mi piel nunca había estado tan hidratada. ¡Recomiendo al 100%!",
+            rating: 5,
+        },
+    ];
+
+    // Función para renderizar las estrellas de valoración
+    const renderStars = (rating: number) => {
+        return Array.from({ length: 5 }, (_, index) => (
+            <FaStar
+                key={index}
+                className={index < rating ? "text-yellow-400" : "text-gray-300"}
+            />
+        ));
     };
 
     return (
@@ -244,7 +284,125 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            {/* Resto del código... */}
+            {/* Sección de Líneas de Producto */}
+            <div className="bg-[#F4E9D6] py-16">
+                <div className="container mx-auto px-4">
+                    <h2 className="text-3xl font-bold text-[#6F6134] text-center mb-8">
+                        Nuestras Líneas de Producto
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Cuidado Facial */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="bg-white p-6 rounded-lg shadow-md text-center"
+                        >
+                            <div className="flex justify-center">
+                                <motion.img
+                                    src="/img/lineas/linea3.jpg" // Ruta de la imagen
+                                    alt="Cuidado Facial"
+                                    className="w-48 h-48 object-cover rounded-full mb-4 border-4 border-[#6F6134]"
+                                    whileHover={{ scale: 1.1 }}
+                                    transition={{ duration: 0.3 }}
+                                />
+                            </div>
+                            <h3 className="text-xl font-semibold text-[#6F6134] mb-4">Cuidado Facial</h3>
+                            <p className="text-[#5A4D2B]">
+                                Productos diseñados para limpiar, hidratar y proteger tu piel, manteniéndola radiante y saludable.
+                            </p>
+                            <Link
+                                to="/productos?category=Cuidado Facial"
+                                className="mt-4 inline-block bg-[#6F6134] text-white px-6 py-2 rounded-lg hover:bg-[#5A4D2B] transition-colors"
+                            >
+                                Ver Productos
+                            </Link>
+                        </motion.div>
+
+                        {/* Cuidado Corporal */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            className="bg-white p-6 rounded-lg shadow-md text-center"
+                        >
+                            <div className="flex justify-center">
+                                <motion.img
+                                    src="/img/lineas/linea1.jpg" // Ruta de la imagen
+                                    alt="Cuidado Corporal"
+                                    className="w-48 h-48 object-cover rounded-full mb-4 border-4 border-[#6F6134]"
+                                    whileHover={{ scale: 1.1 }}
+                                    transition={{ duration: 0.3 }}
+                                />
+                            </div>
+                            <h3 className="text-xl font-semibold text-[#6F6134] mb-4">Cuidado Corporal</h3>
+                            <p className="text-[#5A4D2B]">
+                                Hidrata y nutre tu cuerpo con nuestros productos naturales, ideales para todo tipo de piel.
+                            </p>
+                            <Link
+                                to="/productos?category=Cuidado Corporal"
+                                className="mt-4 inline-block bg-[#6F6134] text-white px-6 py-2 rounded-lg hover:bg-[#5A4D2B] transition-colors"
+                            >
+                                Ver Productos
+                            </Link>
+                        </motion.div>
+
+                        {/* Cuidado Capilar */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                            className="bg-white p-6 rounded-lg shadow-md text-center"
+                        >
+                            <div className="flex justify-center">
+                                <motion.img
+                                    src="/img/lineas/linea2.jpg" // Ruta de la imagen
+                                    alt="Cuidado Capilar"
+                                    className="w-48 h-48 object-cover rounded-full mb-4 border-4 border-[#6F6134]"
+                                    whileHover={{ scale: 1.1 }}
+                                    transition={{ duration: 0.3 }}
+                                />
+                            </div>
+                            <h3 className="text-xl font-semibold text-[#6F6134] mb-4">Cuidado Capilar</h3>
+                            <p className="text-[#5A4D2B]">
+                                Cuida y fortalece tu cabello con productos naturales que respetan su equilibrio natural.
+                            </p>
+                            <Link
+                                to="/productos?category=Cuidado Capilar"
+                                className="mt-4 inline-block bg-[#6F6134] text-white px-6 py-2 rounded-lg hover:bg-[#5A4D2B] transition-colors"
+                            >
+                                Ver Productos
+                            </Link>
+                        </motion.div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Sección de Reseñas de Clientes */}
+            <div className="container mx-auto px-4 py-16">
+                <h2 className="text-3xl font-bold text-[#6F6134] text-center mb-8">
+                    La Opinión de Nuestros Clientes
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {reviews.map((review) => (
+                        <motion.div
+                            key={review.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="bg-white p-6 rounded-lg shadow-md text-center"
+                        >
+                            <div className="flex justify-center mb-4">
+                                <div className="flex space-x-1">
+                                    {renderStars(review.rating)}
+                                </div>
+                            </div>
+                            <p className="text-[#5A4D2B] italic mb-4">"{review.comment}"</p>
+                            <p className="text-[#6F6134] font-semibold">- {review.name}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };
