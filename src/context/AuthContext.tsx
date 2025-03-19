@@ -7,6 +7,7 @@ import {
     createUserWithEmailAndPassword,
     signOut,
     AuthError,
+    sendEmailVerification,
 } from "firebase/auth";
 
 interface AuthContextType {
@@ -14,7 +15,14 @@ interface AuthContextType {
     isLoggedIn: boolean;
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
-    register: (email: string, password: string) => Promise<void>;
+    register: (
+        email: string,
+        password: string,
+        username: string,
+        name: string,
+        surname: string,
+        birthdate: string
+    ) => Promise<void>;
     logout: () => Promise<void>;
 }
 
@@ -53,10 +61,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     // Función para registrarse
-    const register = async (email: string, password: string) => {
+    const register = async (
+        email: string,
+        password: string,
+        username: string,
+        name: string,
+        surname: string,
+        birthdate: string
+    ) => {
         setIsLoading(true); // Inicia la carga
+
+        // Validar que el usuario sea mayor de edad
+        const today = new Date();
+        const birthDate = new Date(birthdate);
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            if (age - 1 < 18) {
+                setIsLoading(false);
+                throw new Error("Debes ser mayor de edad para registrarte.");
+            }
+        } else if (age < 18) {
+            setIsLoading(false);
+            throw new Error("Debes ser mayor de edad para registrarte.");
+        }
+
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            // Crear el usuario en Firebase
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Enviar correo de verificación
+            await sendEmailVerification(user);
+            console.log("Correo de verificación enviado.");
+
+            // Iniciar sesión automáticamente
+            await login(email, password);
+
+            // Aquí podrías guardar los datos adicionales (username, name, surname, birthdate) en una base de datos externa
+            console.log("Usuario registrado:", { email, username, name, surname, birthdate });
         } catch (error) {
             const authError = error as AuthError;
             console.error("Error al registrarse:", authError.message);
