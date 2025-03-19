@@ -169,7 +169,7 @@ const UserProfile: React.FC = () => {
                                         />
                                         <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
                                         <p className="text-[#5A4D2B]">{product.description}</p>
-                                        <p className="text-[#6F6134] font-bold mb-4">${product.price.toFixed(2)}</p>
+                                        <p className="text-[#6F6134] font-bold mb-4">{product.price.toFixed(2)} €</p>
                                     </Link>
                                     {/* Botones para eliminar de favoritos y agregar al carrito */}
                                     <div className="flex justify-between">
@@ -209,7 +209,7 @@ const UserProfile: React.FC = () => {
                                         <strong>Fecha:</strong> {order.date}
                                     </p>
                                     <p className="text-[#5A4D2B]">
-                                        <strong>Total:</strong> ${order.total.toFixed(2)}
+                                        <strong>Total:</strong> {order.total.toFixed(2)} €
                                     </p>
                                 </div>
                             ))}

@@ -75,7 +75,7 @@ const Cart: React.FC = () => {
                                                 <h2 className="text-xl font-semibold text-[#6F6134]">
                                                     {item.name}
                                                 </h2>
-                                                <p className="text-[#5A4D2B]">Precio: ${item.price.toFixed(2)}</p>
+                                                <p className="text-[#5A4D2B]">Precio: {item.price.toFixed(2)} €</p>
                                             </div>
                                         </Link>
                                     </div>
@@ -142,7 +142,7 @@ const Cart: React.FC = () => {
                         <div className="space-y-4">
                             <div className="flex justify-between">
                                 <p className="text-[#5A4D2B]">Subtotal</p>
-                                <p className="text-[#6F6134] font-semibold">${total.toFixed(2)}</p>
+                                <p className="text-[#6F6134] font-semibold">{total.toFixed(2)} €</p>
                             </div>
                             <div className="flex justify-between">
                                 <p className="text-[#5A4D2B]">Envío</p>
@@ -150,7 +150,7 @@ const Cart: React.FC = () => {
                             </div>
                             <div className="flex justify-between border-t pt-4">
                                 <p className="text-[#5A4D2B] font-semibold">Total</p>
-                                <p className="text-[#6F6134] font-bold">${total.toFixed(2)}</p>
+                                <p className="text-[#6F6134] font-bold">{total.toFixed(2)} €</p>
                             </div>
                             <button
                                 className="w-full bg-[#6F6134] text-white px-6 py-2 rounded-lg hover:bg-[#5A4D2B] transition-colors"

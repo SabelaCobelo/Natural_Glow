@@ -293,7 +293,7 @@ const Productos: React.FC = () => {
                         <h3 className="text-xl font-semibold text-[#6F6134] mb-2">{product.name}</h3>
                         <p className="text-gray-600 mb-4">{product.description}</p>
                         <p className="text-2xl font-bold text-[#6F6134] mb-4 drop-shadow-md">
-                            ${product.price.toFixed(2)}
+                            {product.price.toFixed(2)} €
                         </p>
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">

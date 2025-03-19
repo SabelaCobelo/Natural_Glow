@@ -204,7 +204,7 @@ const Home: React.FC = () => {
                                 />
                                 <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
                                 <p className="text-[#5A4D2B] mt-2">{product.description}</p>
-                                <p className="text-[#6F6134] font-bold mt-2">${product.price.toFixed(2)}</p>
+                                <p className="text-[#6F6134] font-bold mt-2">{product.price.toFixed(2)} €</p>
                             </Link>
 
                             {/* Selector de cantidad y botón de favoritos */}
