@@ -18,21 +18,37 @@
 
 🗂️ Estructura del proyecto:
 tienda-cosmetica-natural/
+
 ├── public/
+
 │   └── img/                  # Imágenes de los productos
+
 ├── src/
+
 │   ├── assets/               # Recursos estáticos (iconos, fuentes, etc.)
+
 │   ├── components/           # Componentes reutilizables (Header, Footer, etc.)
+
 │   ├── pages/                # Páginas de la aplicación (Home, Productos, etc.)
+
 │   ├── styles/               # Archivos de estilos globales y por componente
+
 │   ├── App.tsx               # Componente principal de la aplicación
+
 │   ├── main.tsx              # Punto de entrada de la aplicación
+
 │   └── vite-env.d.ts         # Tipos de Vite
+
 ├── .env                      # Variables de entorno
+
 ├── .gitignore                # Archivos y carpetas ignorados por Git
+
 ├── index.html                # Plantilla HTML principal
+
 ├── package.json              # Dependencias y scripts del proyecto
+
 ├── tsconfig.json             # Configuración de TypeScript
+
 └── vite.config.ts            # Configuración de Vite
 
 🚀 Cómo configurar el proyecto
