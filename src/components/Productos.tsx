@@ -147,6 +147,11 @@ const Productos: React.FC = () => {
         navigate("/cart"); // Redirige al usuario a la página del carrito
     };
 
+    // Función para redirigir a la página de detalles del producto
+    const handleProductClick = (productId: string) => {
+        navigate(`/product/${productId}`);
+    };
+
     // Filtrar productos por término de búsqueda, categoría y rango de precios
     const filteredProducts = products.filter(
         (product) =>
@@ -270,6 +275,7 @@ const Productos: React.FC = () => {
                     <div
                         key={product.id}
                         className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow transform hover:scale-105 transition-transform border-2 border-transparent hover:border-[#6F6134] bg-opacity-90 backdrop-blur-sm"
+                        onClick={() => handleProductClick(product.id)} // Redirigir al hacer clic en el producto
                     >
                         <div className="relative">
                             <img
@@ -292,21 +298,30 @@ const Productos: React.FC = () => {
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
                                 <button
-                                    onClick={() => handleQuantityChange(product.id, Math.max(1, (quantities[product.id] || 1) - 1))}
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // Evitar que el clic se propague al contenedor
+                                        handleQuantityChange(product.id, Math.max(1, (quantities[product.id] || 1) - 1));
+                                    }}
                                     className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
                                 >
                                     -
                                 </button>
                                 <span className="text-lg text-[#6F6134]">{quantities[product.id] || 1}</span>
                                 <button
-                                    onClick={() => handleQuantityChange(product.id, (quantities[product.id] || 1) + 1)}
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // Evitar que el clic se propague al contenedor
+                                        handleQuantityChange(product.id, (quantities[product.id] || 1) + 1);
+                                    }}
                                     className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
                                 >
                                     +
                                 </button>
                             </div>
                             <button
-                                onClick={() => toggleFavorite(product)}
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Evitar que el clic se propague al contenedor
+                                    toggleFavorite(product);
+                                }}
                                 className={`text-2xl ${favorites[product.id] ? "text-red-500" : "text-gray-400"} hover:text-red-500 transition-colors`}
                             >
                                 {favorites[product.id] ? "❤️" : "♡"}
@@ -314,7 +329,10 @@ const Productos: React.FC = () => {
                         </div>
                         <button
                             className="w-full bg-[#6F6134] text-white py-2 rounded-md hover:bg-[#5A4D2B] transition-colors transform hover:-translate-y-1 transition-transform"
-                            onClick={() => handleBuy(product)} // Llama a handleBuy al hacer clic
+                            onClick={(e) => {
+                                e.stopPropagation(); // Evitar que el clic se propague al contenedor
+                                handleBuy(product);
+                            }}
                         >
                             Comprar
                         </button>

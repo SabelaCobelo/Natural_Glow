@@ -61,18 +61,27 @@ const Cart: React.FC = () => {
                             return (
                                 <div
                                     key={item.id}
-                                    className="bg-white p-6 rounded-lg shadow-md mb-4 flex items-center"
+                                    className="bg-white p-6 rounded-lg shadow-md mb-4"
                                 >
-                                    <img
-                                        src={item.image}
-                                        alt={item.name}
-                                        className="w-24 h-24 object-cover rounded-lg mr-6"
-                                    />
-                                    <div className="flex-1">
-                                        <h2 className="text-xl font-semibold text-[#6F6134]">
-                                            {item.name}
-                                        </h2>
-                                        <p className="text-[#5A4D2B]">Precio: ${item.price.toFixed(2)}</p>
+                                    <div className="flex items-center">
+                                        {/* Enlace a la página de detalles del producto */}
+                                        <Link to={`/product/${item.id}`} className="flex items-center">
+                                            <img
+                                                src={item.image}
+                                                alt={item.name}
+                                                className="w-24 h-24 object-cover rounded-lg mr-6"
+                                            />
+                                            <div>
+                                                <h2 className="text-xl font-semibold text-[#6F6134]">
+                                                    {item.name}
+                                                </h2>
+                                                <p className="text-[#5A4D2B]">Precio: ${item.price.toFixed(2)}</p>
+                                            </div>
+                                        </Link>
+                                    </div>
+
+                                    {/* Botones de cantidad y eliminar (debajo de la foto) */}
+                                    <div className="mt-4 flex items-center gap-4">
                                         <div className="flex items-center gap-2">
                                             <button
                                                 onClick={() => decreaseQuantity(item.id)} // Disminuir cantidad
@@ -80,7 +89,7 @@ const Cart: React.FC = () => {
                                             >
                                                 -
                                             </button>
-                                            <p className="text-[#5A4D2B]">Cantidad: {quantity}</p>
+                                            <p className="text-[#5A4D2B]">{quantity}</p>
                                             <button
                                                 onClick={() => increaseQuantity(item.id)} // Aumentar cantidad
                                                 className="bg-[#E1C68F] text-[#6F6134] px-3 py-1 rounded-full hover:bg-[#D4B57D] transition-colors"
@@ -88,13 +97,17 @@ const Cart: React.FC = () => {
                                                 +
                                             </button>
                                         </div>
+                                        <button
+                                            className="text-red-500 hover:text-red-700 transition-colors"
+                                            onClick={() => {
+                                                if (window.confirm("¿Estás seguro de que deseas eliminar este producto del carrito?")) {
+                                                    removeFromCart(item.id); // Lógica para eliminar producto
+                                                }
+                                            }}
+                                        >
+                                            <FaTrash className="w-5 h-5" /> {/* Ícono de eliminar */}
+                                        </button>
                                     </div>
-                                    <button
-                                        className="text-red-500 hover:text-red-700 transition-colors"
-                                        onClick={() => removeFromCart(item.id)} // Lógica para eliminar producto
-                                    >
-                                        Eliminar
-                                    </button>
                                 </div>
                             );
                         })}
@@ -116,6 +129,7 @@ const Cart: React.FC = () => {
                                 }}
                             >
                                 <FaTrash className="w-5 h-5" /> {/* Ícono de eliminar */}
+                                Vaciar Carrito
                             </button>
                         </div>
                     </div>

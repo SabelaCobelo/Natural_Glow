@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Asegúrate de importar Link
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ref, onValue, remove } from "firebase/database";
@@ -160,14 +160,17 @@ const UserProfile: React.FC = () => {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {savedProducts.map((product) => (
                                 <div key={product.id} className="bg-[#F4E9D6] p-4 rounded-lg shadow-md">
-                                    <img
-                                        src={product.image}
-                                        alt={product.name}
-                                        className="w-full h-32 object-cover rounded-lg mb-4"
-                                    />
-                                    <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
-                                    <p className="text-[#5A4D2B]">{product.description}</p>
-                                    <p className="text-[#6F6134] font-bold mb-4">${product.price.toFixed(2)}</p>
+                                    {/* Enlace a la página de detalles del producto */}
+                                    <Link to={`/product/${product.id}`}>
+                                        <img
+                                            src={product.image}
+                                            alt={product.name}
+                                            className="w-full h-32 object-cover rounded-lg mb-4"
+                                        />
+                                        <h3 className="text-xl font-semibold text-[#6F6134]">{product.name}</h3>
+                                        <p className="text-[#5A4D2B]">{product.description}</p>
+                                        <p className="text-[#6F6134] font-bold mb-4">${product.price.toFixed(2)}</p>
+                                    </Link>
                                     {/* Botones para eliminar de favoritos y agregar al carrito */}
                                     <div className="flex justify-between">
                                         <button

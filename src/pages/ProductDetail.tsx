@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { db } from "../../firebase"; // Importa la base de datos desde firebase.js
+import { ref, get } from "firebase/database"; // Importa las funciones necesarias de Firebase
 
 interface Product {
     id: string;
@@ -29,10 +31,15 @@ const ProductDetail: React.FC = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await fetch(`/api/products/${id}`);
-                if (!response.ok) throw new Error("Producto no encontrado");
-                const data: Product = await response.json();
-                setProduct(data);
+                const productRef = ref(db, `Producto/${id}`);
+                const snapshot = await get(productRef);
+
+                if (!snapshot.exists()) {
+                    throw new Error("Producto no encontrado");
+                }
+
+                const data = snapshot.val();
+                setProduct({ id, ...data });
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Error al cargar el producto");
             } finally {
